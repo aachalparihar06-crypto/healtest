@@ -1,0 +1,25 @@
+{
+  "name": "healtest-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "npx tsx src/index.ts",
+    "dev": "npx tsx watch src/index.ts",
+    "test:stage2": "npx tsx src/verify-stage2.ts",
+    "test:stage3": "npx tsx src/verify-stage3.ts",
+    "test:stage4": "npx tsx src/verify-stage4.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "playwright": "^1.64.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.23.15",
+    "typescript": "^5.7.2"
+  }
+}

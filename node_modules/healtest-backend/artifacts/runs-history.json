@@ -1,0 +1,2515 @@
+[
+  {
+    "id": "run-mv2rvfat-3a0l",
+    "createdAt": "2026-10-10T19:13:30.677Z",
+    "completedAt": "2026-10-10T19:13:37.291Z",
+    "intent": {
+      "targetUrl": "http://localhost:5173",
+      "naturalLanguageInstruction": "find and check  add to cart option",
+      "allowLocalhost": true,
+      "timeoutMs": 15000,
+      "maxRetries": 2,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "FAILED",
+    "steps": [
+      {
+        "id": "step-mv2rvfb8-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:5173)",
+        "selector": {},
+        "value": "http://localhost:5173",
+        "status": "passed",
+        "durationMs": 524,
+        "domSnapshotExcerpt": "<title>HealTest — Intent-Based Self-Healing E2E Testing Platform</title> (Status: 200)",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rvfat-3a0l/step-1-after.png"
+      },
+      {
+        "id": "step-mv2rvfb8-2",
+        "order": 2,
+        "type": "assert_visible",
+        "description": "Verify presence of \"find\"",
+        "selector": {
+          "text": "find"
+        },
+        "status": "failed",
+        "durationMs": 5070,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('find').first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2rvfat-3a0l/step-2-failure.png"
+      },
+      {
+        "id": "step-mv2rvfb8-3",
+        "order": 3,
+        "type": "assert_visible",
+        "description": "Verify that \"add to cart option\" is visible",
+        "selector": {
+          "text": "add to cart option"
+        },
+        "value": "add to cart option",
+        "status": "pending",
+        "durationMs": 0
+      },
+      {
+        "id": "step-mv2rvfb8-4",
+        "order": 4,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "pending",
+        "durationMs": 0
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2rvfau-0",
+        "timestamp": "12:43:30 AM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:5173"
+      },
+      {
+        "id": "log-mv2rvfb8-1",
+        "timestamp": "12:43:30 AM",
+        "level": "info",
+        "message": "Intent instruction: \"find and check  add to cart option\""
+      },
+      {
+        "id": "log-mv2rvfb9-2",
+        "timestamp": "12:43:30 AM",
+        "level": "info",
+        "message": "Decomposed intent into 4 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2rvfb9-3",
+        "timestamp": "12:43:30 AM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2rvfkt-4",
+        "timestamp": "12:43:31 AM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:5173)",
+        "stepId": "step-mv2rvfb8-1"
+      },
+      {
+        "id": "log-mv2rvfzd-5",
+        "timestamp": "12:43:31 AM",
+        "level": "info",
+        "message": "Target loaded: \"http://localhost:5173/\" [HTTP 200] Title: \"HealTest — Intent-Based Self-Healing E2E Testing Platform\"",
+        "stepId": "step-mv2rvfb8-1"
+      },
+      {
+        "id": "log-mv2rvgc9-6",
+        "timestamp": "12:43:32 AM",
+        "level": "info",
+        "message": "[Step #2] Executing ASSERT_VISIBLE: Verify presence of \"find\"",
+        "stepId": "step-mv2rvfb8-2"
+      },
+      {
+        "id": "log-mv2rvk7b-7",
+        "timestamp": "12:43:37 AM",
+        "level": "warn",
+        "message": "Step #2 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('find').first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2rvfb8-2"
+      },
+      {
+        "id": "log-mv2rvk93-8",
+        "timestamp": "12:43:37 AM",
+        "level": "warn",
+        "message": "[SELF-HEALING] Recovery rejected: No candidate elements in live DOM met the minimum confidence threshold for \"find\".",
+        "stepId": "step-mv2rvfb8-2"
+      },
+      {
+        "id": "log-mv2rvk93-9",
+        "timestamp": "12:43:37 AM",
+        "level": "error",
+        "message": "Step #2 permanently failed. Halting workflow.",
+        "stepId": "step-mv2rvfb8-2"
+      },
+      {
+        "id": "log-mv2rvkej-10",
+        "timestamp": "12:43:37 AM",
+        "level": "info",
+        "message": "Playwright execution finished in 6614ms. Verdict: FAILED. (Healed: 0, Passed: 1, Failed: 1)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2rvfat-3a0l/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rvfat-3a0l/step-2-failure.png"
+    ],
+    "executionTimeMs": 6614,
+    "summary": {
+      "totalSteps": 4,
+      "passedSteps": 1,
+      "failedSteps": 1,
+      "healedSteps": 0,
+      "outcomeVerdict": "FAILED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_ELEMENT_MISSING",
+      "label": "UI Element Missing / Selector Broken",
+      "source": "ui",
+      "details": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('find').first() to be visible\u001b[22m\n"
+    }
+  },
+  {
+    "id": "run-mv2rcsib-wlly",
+    "createdAt": "2026-10-10T18:59:01.331Z",
+    "completedAt": "2026-10-10T18:59:07.167Z",
+    "intent": {
+      "targetUrl": "http://localhost:3001/fixture?broken=true",
+      "naturalLanguageInstruction": "Navigate to fixture, enter \"Unrecoverable Target\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible",
+      "allowLocalhost": true,
+      "timeoutMs": 10000,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "FAILED",
+    "steps": [
+      {
+        "id": "step-mv2rcsic-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:3001/fixture?broken=true)",
+        "selector": {},
+        "value": "http://localhost:3001/fixture?broken=true",
+        "status": "passed",
+        "durationMs": 42,
+        "domSnapshotExcerpt": "<title>HealTest Fixture Target Page</title> (Status: 200)",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcsib-wlly/step-1-after.png"
+      },
+      {
+        "id": "step-mv2rcsic-2",
+        "order": 2,
+        "type": "fill",
+        "description": "Enter \"Unrecoverable Target\" into field \"Feedback Input\"",
+        "selector": {
+          "role": "textbox",
+          "name": "Feedback Input",
+          "placeholder": "Feedback Input"
+        },
+        "value": "Unrecoverable Target",
+        "status": "passed",
+        "durationMs": 35,
+        "domSnapshotExcerpt": "<input type=\"text\" id=\"feedback-input\" placeholder=\"Type your feedback message\" aria-label=\"Feedback Input\" style=\"\">",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcsib-wlly/step-2-after.png"
+      },
+      {
+        "id": "step-mv2rcsic-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"Submit Feedback\"",
+        "selector": {
+          "role": "button",
+          "name": "Submit Feedback",
+          "text": "Submit Feedback"
+        },
+        "status": "failed",
+        "durationMs": 5051,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).or(getByRole('link', { name: 'Submit Feedback' })).or(getByText('Submit Feedback')).first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2rcsib-wlly/step-3-failure.png"
+      },
+      {
+        "id": "step-mv2rcsic-4",
+        "order": 4,
+        "type": "assert_visible",
+        "description": "Verify that \"Feedback Submitted Successfully\" is visible",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "pending",
+        "durationMs": 0
+      },
+      {
+        "id": "step-mv2rcsic-5",
+        "order": 5,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "pending",
+        "durationMs": 0
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2rcsic-0",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:3001/fixture?broken=true"
+      },
+      {
+        "id": "log-mv2rcsic-1",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to fixture, enter \"Unrecoverable Target\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible\""
+      },
+      {
+        "id": "log-mv2rcsic-2",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Decomposed intent into 5 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2rcsic-3",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2rcsqv-4",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:3001/fixture?broken=true)",
+        "stepId": "step-mv2rcsic-1"
+      },
+      {
+        "id": "log-mv2rcss0-5",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Target loaded: \"http://localhost:3001/fixture?broken=true\" [HTTP 200] Title: \"HealTest Fixture Target Page\"",
+        "stepId": "step-mv2rcsic-1"
+      },
+      {
+        "id": "log-mv2rcss2-6",
+        "timestamp": "12:29:01 AM",
+        "level": "error",
+        "message": "[Browser Console] Failed to load resource: the server responded with a status of 404 (Not Found)"
+      },
+      {
+        "id": "log-mv2rcsxl-7",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "[Step #2] Executing FILL: Enter \"Unrecoverable Target\" into field \"Feedback Input\"",
+        "stepId": "step-mv2rcsic-2"
+      },
+      {
+        "id": "log-mv2rcsyk-8",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Entered value \"Unrecoverable Target\" into field.",
+        "stepId": "step-mv2rcsic-2"
+      },
+      {
+        "id": "log-mv2rcszy-9",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "[Step #3] Executing CLICK: Click \"Submit Feedback\"",
+        "stepId": "step-mv2rcsic-3"
+      },
+      {
+        "id": "log-mv2rcwuv-10",
+        "timestamp": "12:29:06 AM",
+        "level": "warn",
+        "message": "Step #3 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).or(getByRole('link', { name: 'Submit Feedback' })).or(getByText('Submit Feedback')).first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2rcsic-3"
+      },
+      {
+        "id": "log-mv2rcww9-11",
+        "timestamp": "12:29:07 AM",
+        "level": "warn",
+        "message": "[SELF-HEALING] Recovery rejected: No candidate elements in live DOM met the minimum confidence threshold for \"Submit Feedback\".",
+        "stepId": "step-mv2rcsic-3"
+      },
+      {
+        "id": "log-mv2rcww9-12",
+        "timestamp": "12:29:07 AM",
+        "level": "error",
+        "message": "Step #3 permanently failed. Halting workflow.",
+        "stepId": "step-mv2rcsic-3"
+      },
+      {
+        "id": "log-mv2rcx0e-13",
+        "timestamp": "12:29:07 AM",
+        "level": "info",
+        "message": "Playwright execution finished in 5835ms. Verdict: FAILED. (Healed: 0, Passed: 2, Failed: 1)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2rcsib-wlly/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcsib-wlly/step-2-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcsib-wlly/step-3-failure.png"
+    ],
+    "executionTimeMs": 5835,
+    "summary": {
+      "totalSteps": 5,
+      "passedSteps": 2,
+      "failedSteps": 1,
+      "healedSteps": 0,
+      "outcomeVerdict": "FAILED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_ELEMENT_MISSING",
+      "label": "UI Element Missing / Selector Broken",
+      "source": "ui",
+      "details": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).or(getByRole('link', { name: 'Submit Feedback' })).or(getByText('Submit Feedback')).first() to be visible\u001b[22m\n"
+    }
+  },
+  {
+    "id": "run-mv2rcnsw-dzg8",
+    "createdAt": "2026-10-10T18:58:55.232Z",
+    "completedAt": "2026-10-10T18:59:01.328Z",
+    "intent": {
+      "targetUrl": "http://localhost:3001/fixture?mutated=true",
+      "naturalLanguageInstruction": "Navigate to fixture, enter \"Stage 4 Self-Healing Test\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible",
+      "allowLocalhost": true,
+      "timeoutMs": 15000,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "HEALED",
+    "steps": [
+      {
+        "id": "step-mv2rcnsy-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:3001/fixture?mutated=true)",
+        "selector": {},
+        "value": "http://localhost:3001/fixture?mutated=true",
+        "status": "passed",
+        "durationMs": 44,
+        "domSnapshotExcerpt": "<title>HealTest Fixture Target Page</title> (Status: 200)",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-1-after.png"
+      },
+      {
+        "id": "step-mv2rcnsy-2",
+        "order": 2,
+        "type": "fill",
+        "description": "Enter \"Stage 4 Self-Healing Test\" into field \"Feedback Input\"",
+        "selector": {
+          "role": "textbox",
+          "name": "Feedback Input",
+          "placeholder": "Feedback Input"
+        },
+        "value": "Stage 4 Self-Healing Test",
+        "status": "passed",
+        "durationMs": 38,
+        "domSnapshotExcerpt": "<input type=\"text\" id=\"feedback-input\" placeholder=\"Type your feedback message\" aria-label=\"Feedback Input\" style=\"\">",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-2-after.png"
+      },
+      {
+        "id": "step-mv2rcnsy-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"Submit Feedback\"",
+        "selector": {
+          "role": "button",
+          "name": "Send Feedback",
+          "ariaLabel": "Send Feedback",
+          "cssFallback": "#send-feedback-btn"
+        },
+        "status": "healed",
+        "durationMs": 5083,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).or(getByRole('link', { name: 'Submit Feedback' })).or(getByText('Submit Feedback')).first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-3-failure.png",
+        "healingRecord": {
+          "id": "heal-mv2rcs7q-s4x",
+          "stepId": "step-mv2rcnsy-3",
+          "stepIndex": 2,
+          "originalAction": {
+            "type": "click",
+            "selector": {
+              "role": "button",
+              "name": "Submit Feedback",
+              "text": "Submit Feedback"
+            }
+          },
+          "failureReason": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).or(getByRole('link', { name: 'Submit Feedback' })).or(getByText('Submit Feedback')).first() to be visible\u001b[22m\n",
+          "detectedDomChanges": {
+            "previousExpected": "<button>Submit Feedback</button>",
+            "actualDetected": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "changeType": "attribute_changed"
+          },
+          "candidatesEvaluated": [
+            {
+              "selector": {
+                "role": "button",
+                "name": "Send Feedback",
+                "ariaLabel": "Send Feedback",
+                "cssFallback": "#send-feedback-btn"
+              },
+              "strategy": "aria_label_fallback",
+              "confidenceScore": 0.68,
+              "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+              "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+            }
+          ],
+          "chosenAlternative": {
+            "selector": {
+              "role": "button",
+              "name": "Send Feedback",
+              "ariaLabel": "Send Feedback",
+              "cssFallback": "#send-feedback-btn"
+            },
+            "strategy": "aria_label_fallback",
+            "confidenceScore": 0.68,
+            "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+          },
+          "explanation": "Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+          "confidenceScore": 0.68,
+          "healedAt": "2026-10-10T18:59:00.950Z"
+        },
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-3-healed.png"
+      },
+      {
+        "id": "step-mv2rcnsy-4",
+        "order": 4,
+        "type": "assert_visible",
+        "description": "Verify that \"Feedback Submitted Successfully\" is visible",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 14,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Stage 4 Self-Healing Test</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-4-after.png"
+      },
+      {
+        "id": "step-mv2rcnsy-5",
+        "order": 5,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 14,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Stage 4 Self-Healing Test</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-5-after.png"
+      }
+    ],
+    "healingRecords": [
+      {
+        "id": "heal-mv2rcs7q-s4x",
+        "stepId": "step-mv2rcnsy-3",
+        "stepIndex": 2,
+        "originalAction": {
+          "type": "click",
+          "selector": {
+            "role": "button",
+            "name": "Submit Feedback",
+            "text": "Submit Feedback"
+          }
+        },
+        "failureReason": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).or(getByRole('link', { name: 'Submit Feedback' })).or(getByText('Submit Feedback')).first() to be visible\u001b[22m\n",
+        "detectedDomChanges": {
+          "previousExpected": "<button>Submit Feedback</button>",
+          "actualDetected": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+          "changeType": "attribute_changed"
+        },
+        "candidatesEvaluated": [
+          {
+            "selector": {
+              "role": "button",
+              "name": "Send Feedback",
+              "ariaLabel": "Send Feedback",
+              "cssFallback": "#send-feedback-btn"
+            },
+            "strategy": "aria_label_fallback",
+            "confidenceScore": 0.68,
+            "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+          }
+        ],
+        "chosenAlternative": {
+          "selector": {
+            "role": "button",
+            "name": "Send Feedback",
+            "ariaLabel": "Send Feedback",
+            "cssFallback": "#send-feedback-btn"
+          },
+          "strategy": "aria_label_fallback",
+          "confidenceScore": 0.68,
+          "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+          "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+        },
+        "explanation": "Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+        "confidenceScore": 0.68,
+        "healedAt": "2026-10-10T18:59:00.950Z"
+      }
+    ],
+    "logs": [
+      {
+        "id": "log-mv2rcnsy-0",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:3001/fixture?mutated=true"
+      },
+      {
+        "id": "log-mv2rcnsy-1",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to fixture, enter \"Stage 4 Self-Healing Test\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible\""
+      },
+      {
+        "id": "log-mv2rcnsy-2",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Decomposed intent into 5 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2rcnsy-3",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2rco1r-4",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:3001/fixture?mutated=true)",
+        "stepId": "step-mv2rcnsy-1"
+      },
+      {
+        "id": "log-mv2rco2z-5",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Target loaded: \"http://localhost:3001/fixture?mutated=true\" [HTTP 200] Title: \"HealTest Fixture Target Page\"",
+        "stepId": "step-mv2rcnsy-1"
+      },
+      {
+        "id": "log-mv2rco31-6",
+        "timestamp": "12:28:55 AM",
+        "level": "error",
+        "message": "[Browser Console] Failed to load resource: the server responded with a status of 404 (Not Found)"
+      },
+      {
+        "id": "log-mv2rco91-7",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "[Step #2] Executing FILL: Enter \"Stage 4 Self-Healing Test\" into field \"Feedback Input\"",
+        "stepId": "step-mv2rcnsy-2"
+      },
+      {
+        "id": "log-mv2rcoa3-8",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Entered value \"Stage 4 Self-Healing Test\" into field.",
+        "stepId": "step-mv2rcnsy-2"
+      },
+      {
+        "id": "log-mv2rcobf-9",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "[Step #3] Executing CLICK: Click \"Submit Feedback\"",
+        "stepId": "step-mv2rcnsy-3"
+      },
+      {
+        "id": "log-mv2rcs6d-10",
+        "timestamp": "12:29:00 AM",
+        "level": "warn",
+        "message": "Step #3 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).or(getByRole('link', { name: 'Submit Feedback' })).or(getByText('Submit Feedback')).first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2rcnsy-3"
+      },
+      {
+        "id": "log-mv2rcs7q-11",
+        "timestamp": "12:29:00 AM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Discovered safe recovery candidate. Strategy: aria_label_fallback (68% confidence).",
+        "stepId": "step-mv2rcnsy-3"
+      },
+      {
+        "id": "log-mv2rcs7q-12",
+        "timestamp": "12:29:00 AM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+        "stepId": "step-mv2rcnsy-3"
+      },
+      {
+        "id": "log-mv2rcs8m-13",
+        "timestamp": "12:29:00 AM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Action retry succeeded with repaired locator! Workflow recovered.",
+        "stepId": "step-mv2rcnsy-3"
+      },
+      {
+        "id": "log-mv2rcsa5-14",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "[Step #4] Executing ASSERT_VISIBLE: Verify that \"Feedback Submitted Successfully\" is visible",
+        "stepId": "step-mv2rcnsy-4"
+      },
+      {
+        "id": "log-mv2rcsaj-15",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Verified live element in DOM: \"Feedback Submitted Successfully: Stage 4 Self-Healing Test\"",
+        "stepId": "step-mv2rcnsy-4"
+      },
+      {
+        "id": "log-mv2rcsbw-16",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "[Step #5] Executing ASSERT_TEXT: Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "stepId": "step-mv2rcnsy-5"
+      },
+      {
+        "id": "log-mv2rcsca-17",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Verified live element in DOM: \"Feedback Submitted Successfully: Stage 4 Self-Healing Test\"",
+        "stepId": "step-mv2rcnsy-5"
+      },
+      {
+        "id": "log-mv2rcsi8-18",
+        "timestamp": "12:29:01 AM",
+        "level": "info",
+        "message": "Playwright execution finished in 6096ms. Verdict: HEALED. (Healed: 1, Passed: 4, Failed: 0)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-2-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-3-failure.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-3-healed.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-4-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcnsw-dzg8/step-5-after.png"
+    ],
+    "executionTimeMs": 6096,
+    "summary": {
+      "totalSteps": 5,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "healedSteps": 1,
+      "outcomeVerdict": "HEALED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_HEALED",
+      "label": "UI Mutation Autonomously Healed",
+      "source": "ui",
+      "details": "Discovered and autonomously recovered 1 UI mutation(s) using accessible heuristics and verified ground truth outcome."
+    }
+  },
+  {
+    "id": "run-mv2rcn2k-mpqd",
+    "createdAt": "2026-10-10T18:58:54.284Z",
+    "completedAt": "2026-10-10T18:58:55.228Z",
+    "intent": {
+      "targetUrl": "http://localhost:3001/fixture",
+      "naturalLanguageInstruction": "Navigate to fixture, enter \"Shivansh Patel\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible",
+      "allowLocalhost": true,
+      "timeoutMs": 15000,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "PASSED",
+    "steps": [
+      {
+        "id": "step-mv2rcn2l-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:3001/fixture)",
+        "selector": {},
+        "value": "http://localhost:3001/fixture",
+        "status": "passed",
+        "durationMs": 46,
+        "domSnapshotExcerpt": "<title>HealTest Fixture Target Page</title> (Status: 200)",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-1-after.png"
+      },
+      {
+        "id": "step-mv2rcn2l-2",
+        "order": 2,
+        "type": "fill",
+        "description": "Enter \"Shivansh Patel\" into field \"Feedback Input\"",
+        "selector": {
+          "role": "textbox",
+          "name": "Feedback Input",
+          "placeholder": "Feedback Input"
+        },
+        "value": "Shivansh Patel",
+        "status": "passed",
+        "durationMs": 43,
+        "domSnapshotExcerpt": "<input type=\"text\" id=\"feedback-input\" placeholder=\"Type your feedback message\" aria-label=\"Feedback Input\" style=\"\">",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-2-after.png"
+      },
+      {
+        "id": "step-mv2rcn2l-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"Submit Feedback\"",
+        "selector": {
+          "role": "button",
+          "name": "Submit Feedback",
+          "text": "Submit Feedback"
+        },
+        "status": "passed",
+        "durationMs": 30,
+        "domSnapshotExcerpt": "<button id=\"submit-btn\" role=\"button\">Submit Feedback</button>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-3-after.png"
+      },
+      {
+        "id": "step-mv2rcn2l-4",
+        "order": 4,
+        "type": "assert_visible",
+        "description": "Verify that \"Feedback Submitted Successfully\" is visible",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 10,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Shivansh Patel</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-4-after.png"
+      },
+      {
+        "id": "step-mv2rcn2l-5",
+        "order": 5,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 9,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Shivansh Patel</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-5-after.png"
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2rcn2l-0",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:3001/fixture"
+      },
+      {
+        "id": "log-mv2rcn2l-1",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to fixture, enter \"Shivansh Patel\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible\""
+      },
+      {
+        "id": "log-mv2rcn2l-2",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "Decomposed intent into 5 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2rcn2l-3",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2rcnb8-4",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:3001/fixture)",
+        "stepId": "step-mv2rcn2l-1"
+      },
+      {
+        "id": "log-mv2rcnci-5",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "Target loaded: \"http://localhost:3001/fixture\" [HTTP 200] Title: \"HealTest Fixture Target Page\"",
+        "stepId": "step-mv2rcn2l-1"
+      },
+      {
+        "id": "log-mv2rcnck-6",
+        "timestamp": "12:28:54 AM",
+        "level": "error",
+        "message": "[Browser Console] Failed to load resource: the server responded with a status of 404 (Not Found)"
+      },
+      {
+        "id": "log-mv2rcnia-7",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "[Step #2] Executing FILL: Enter \"Shivansh Patel\" into field \"Feedback Input\"",
+        "stepId": "step-mv2rcn2l-2"
+      },
+      {
+        "id": "log-mv2rcnjh-8",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "Entered value \"Shivansh Patel\" into field.",
+        "stepId": "step-mv2rcn2l-2"
+      },
+      {
+        "id": "log-mv2rcnkl-9",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "[Step #3] Executing CLICK: Click \"Submit Feedback\"",
+        "stepId": "step-mv2rcn2l-3"
+      },
+      {
+        "id": "log-mv2rcnlf-10",
+        "timestamp": "12:28:54 AM",
+        "level": "info",
+        "message": "Dispatched click to accessible target \"Click \"Submit Feedback\"\".",
+        "stepId": "step-mv2rcn2l-3"
+      },
+      {
+        "id": "log-mv2rcnmh-11",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "[Step #4] Executing ASSERT_VISIBLE: Verify that \"Feedback Submitted Successfully\" is visible",
+        "stepId": "step-mv2rcn2l-4"
+      },
+      {
+        "id": "log-mv2rcnmr-12",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Verified live element in DOM: \"Feedback Submitted Successfully: Shivansh Patel\"",
+        "stepId": "step-mv2rcn2l-4"
+      },
+      {
+        "id": "log-mv2rcnnt-13",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "[Step #5] Executing ASSERT_TEXT: Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "stepId": "step-mv2rcn2l-5"
+      },
+      {
+        "id": "log-mv2rcno2-14",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Verified live element in DOM: \"Feedback Submitted Successfully: Shivansh Patel\"",
+        "stepId": "step-mv2rcn2l-5"
+      },
+      {
+        "id": "log-mv2rcnss-15",
+        "timestamp": "12:28:55 AM",
+        "level": "info",
+        "message": "Playwright execution finished in 943ms. Verdict: PASSED. (Healed: 0, Passed: 5, Failed: 0)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-2-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-3-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-4-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2rcn2k-mpqd/step-5-after.png"
+    ],
+    "executionTimeMs": 943,
+    "summary": {
+      "totalSteps": 5,
+      "passedSteps": 5,
+      "failedSteps": 0,
+      "healedSteps": 0,
+      "outcomeVerdict": "PASSED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "NONE",
+      "label": "Clean Pass (No Errors)",
+      "source": "none",
+      "details": "All steps executed and verified successfully without UI mutations or system faults."
+    }
+  },
+  {
+    "id": "run-mv2ramo0-8y1w",
+    "createdAt": "2026-10-10T18:57:20.448Z",
+    "completedAt": "2026-10-10T18:57:21.202Z",
+    "intent": {
+      "targetUrl": "https://nonexistent-domain-xyz-12345.org",
+      "naturalLanguageInstruction": "Navigate to page, verify welcome is visible",
+      "allowLocalhost": false
+    },
+    "status": "FAILED",
+    "steps": [
+      {
+        "id": "step-mv2ramo2-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (https://nonexistent-domain-xyz-12345.org)",
+        "selector": {},
+        "value": "https://nonexistent-domain-xyz-12345.org",
+        "status": "failed",
+        "durationMs": 276,
+        "error": "page.goto: net::ERR_NAME_NOT_RESOLVED at https://nonexistent-domain-xyz-12345.org/\nCall log:\n\u001b[2m  - navigating to \"https://nonexistent-domain-xyz-12345.org/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2ramo0-8y1w/step-1-failure.png"
+      },
+      {
+        "id": "step-mv2ramo2-2",
+        "order": 2,
+        "type": "assert_visible",
+        "description": "Verify that \"welcome\" is visible",
+        "selector": {
+          "text": "welcome"
+        },
+        "value": "welcome",
+        "status": "pending",
+        "durationMs": 0
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2ramo1-0",
+        "timestamp": "12:27:20 AM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: https://nonexistent-domain-xyz-12345.org"
+      },
+      {
+        "id": "log-mv2ramo2-1",
+        "timestamp": "12:27:20 AM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to page, verify welcome is visible\""
+      },
+      {
+        "id": "log-mv2ramo2-2",
+        "timestamp": "12:27:20 AM",
+        "level": "info",
+        "message": "Decomposed intent into 2 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2ramo2-3",
+        "timestamp": "12:27:20 AM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2ramw6-4",
+        "timestamp": "12:27:20 AM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (https://nonexistent-domain-xyz-12345.org)",
+        "stepId": "step-mv2ramo2-1"
+      },
+      {
+        "id": "log-mv2ran1g-5",
+        "timestamp": "12:27:20 AM",
+        "level": "warn",
+        "message": "Step #1 failed: page.goto: net::ERR_NAME_NOT_RESOLVED at https://nonexistent-domain-xyz-12345.org/\nCall log:\n\u001b[2m  - navigating to \"https://nonexistent-domain-xyz-12345.org/\", waiting until \"domcontentloaded\"\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2ramo2-1"
+      },
+      {
+        "id": "log-mv2ran3u-6",
+        "timestamp": "12:27:21 AM",
+        "level": "warn",
+        "message": "[SELF-HEALING] Recovery rejected: No candidate elements in live DOM met the minimum confidence threshold for \"\".",
+        "stepId": "step-mv2ramo2-1"
+      },
+      {
+        "id": "log-mv2ran3u-7",
+        "timestamp": "12:27:21 AM",
+        "level": "error",
+        "message": "Step #1 permanently failed. Halting workflow.",
+        "stepId": "step-mv2ramo2-1"
+      },
+      {
+        "id": "log-mv2ran8y-8",
+        "timestamp": "12:27:21 AM",
+        "level": "info",
+        "message": "Playwright execution finished in 754ms. Verdict: FAILED. (Healed: 0, Passed: 0, Failed: 1)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2ramo0-8y1w/step-1-failure.png"
+    ],
+    "executionTimeMs": 754,
+    "summary": {
+      "totalSteps": 2,
+      "passedSteps": 0,
+      "failedSteps": 1,
+      "healedSteps": 0,
+      "outcomeVerdict": "FAILED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "APP_NETWORK_ERROR",
+      "label": "Target Application Network / Server Error",
+      "source": "application",
+      "details": "page.goto: net::ERR_NAME_NOT_RESOLVED at https://nonexistent-domain-xyz-12345.org/\nCall log:\n\u001b[2m  - navigating to \"https://nonexistent-domain-xyz-12345.org/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    }
+  },
+  {
+    "id": "run-mv2r9340-5ndc",
+    "createdAt": "2026-10-10T18:56:08.448Z",
+    "completedAt": "2026-10-10T18:56:09.231Z",
+    "intent": {
+      "targetUrl": "https://example.com",
+      "naturalLanguageInstruction": "Navigate to example page, verify \"documentation examples\" is visible",
+      "allowLocalhost": false
+    },
+    "status": "PASSED",
+    "steps": [
+      {
+        "id": "step-mv2r9341-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (https://example.com)",
+        "selector": {},
+        "value": "https://example.com",
+        "status": "passed",
+        "durationMs": 228,
+        "domSnapshotExcerpt": "<title>Example Domain</title> (Status: 200)",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2r9340-5ndc/step-1-after.png"
+      },
+      {
+        "id": "step-mv2r9341-2",
+        "order": 2,
+        "type": "assert_visible",
+        "description": "Verify that \"documentation examples\" is visible",
+        "selector": {
+          "text": "documentation examples"
+        },
+        "value": "documentation examples",
+        "status": "passed",
+        "durationMs": 33,
+        "domSnapshotExcerpt": "<p lang=\"en\">This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.</p>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2r9340-5ndc/step-2-after.png"
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2r9341-0",
+        "timestamp": "12:26:08 AM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: https://example.com"
+      },
+      {
+        "id": "log-mv2r9341-1",
+        "timestamp": "12:26:08 AM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to example page, verify \"documentation examples\" is visible\""
+      },
+      {
+        "id": "log-mv2r9341-2",
+        "timestamp": "12:26:08 AM",
+        "level": "info",
+        "message": "Decomposed intent into 2 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2r9341-3",
+        "timestamp": "12:26:08 AM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2r93bh-4",
+        "timestamp": "12:26:08 AM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (https://example.com)",
+        "stepId": "step-mv2r9341-1"
+      },
+      {
+        "id": "log-mv2r93hs-5",
+        "timestamp": "12:26:08 AM",
+        "level": "info",
+        "message": "Target loaded: \"https://example.com/\" [HTTP 200] Title: \"Example Domain\"",
+        "stepId": "step-mv2r9341-1"
+      },
+      {
+        "id": "log-mv2r93jc-6",
+        "timestamp": "12:26:09 AM",
+        "level": "info",
+        "message": "[Step #2] Executing ASSERT_VISIBLE: Verify that \"documentation examples\" is visible",
+        "stepId": "step-mv2r9341-2"
+      },
+      {
+        "id": "log-mv2r93k8-7",
+        "timestamp": "12:26:09 AM",
+        "level": "info",
+        "message": "Verified live element in DOM: \"This domain is for use in documentation examples without needing permission. Thi\"",
+        "stepId": "step-mv2r9341-2"
+      },
+      {
+        "id": "log-mv2r93pr-8",
+        "timestamp": "12:26:09 AM",
+        "level": "info",
+        "message": "Playwright execution finished in 783ms. Verdict: PASSED. (Healed: 0, Passed: 2, Failed: 0)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2r9340-5ndc/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2r9340-5ndc/step-2-after.png"
+    ],
+    "executionTimeMs": 783,
+    "summary": {
+      "totalSteps": 2,
+      "passedSteps": 2,
+      "failedSteps": 0,
+      "healedSteps": 0,
+      "outcomeVerdict": "PASSED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "NONE",
+      "label": "Clean Pass (No Errors)",
+      "source": "none",
+      "details": "All steps executed and verified successfully without UI mutations or system faults."
+    }
+  },
+  {
+    "id": "run-mv2r85yl-ggs1",
+    "createdAt": "2026-10-10T18:55:25.485Z",
+    "completedAt": "2026-10-10T18:55:31.326Z",
+    "intent": {
+      "targetUrl": "https://example.com",
+      "naturalLanguageInstruction": "Navigate to example page, verify \"Example Domain\" is visible, click \"More information...\"",
+      "allowLocalhost": false
+    },
+    "status": "FAILED",
+    "steps": [
+      {
+        "id": "step-mv2r85yx-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (https://example.com)",
+        "selector": {},
+        "value": "https://example.com",
+        "status": "passed",
+        "durationMs": 257,
+        "domSnapshotExcerpt": "<title>Example Domain</title> (Status: 200)",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2r85yl-ggs1/step-1-after.png"
+      },
+      {
+        "id": "step-mv2r85yx-2",
+        "order": 2,
+        "type": "assert_visible",
+        "description": "Verify that \"Example Domain\" is visible",
+        "selector": {
+          "text": "Example Domain"
+        },
+        "value": "Example Domain",
+        "status": "failed",
+        "durationMs": 5052,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Example Domain').first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2r85yl-ggs1/step-2-failure.png"
+      },
+      {
+        "id": "step-mv2r85yx-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"More information...\"",
+        "selector": {
+          "role": "button",
+          "name": "More information...",
+          "text": "More information..."
+        },
+        "status": "pending",
+        "durationMs": 0
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2r85yl-0",
+        "timestamp": "12:25:25 AM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: https://example.com"
+      },
+      {
+        "id": "log-mv2r85yw-1",
+        "timestamp": "12:25:25 AM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to example page, verify \"Example Domain\" is visible, click \"More information...\"\""
+      },
+      {
+        "id": "log-mv2r85yx-2",
+        "timestamp": "12:25:25 AM",
+        "level": "info",
+        "message": "Decomposed intent into 3 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2r85yx-3",
+        "timestamp": "12:25:25 AM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2r868r-4",
+        "timestamp": "12:25:25 AM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (https://example.com)",
+        "stepId": "step-mv2r85yx-1"
+      },
+      {
+        "id": "log-mv2r86fw-5",
+        "timestamp": "12:25:26 AM",
+        "level": "info",
+        "message": "Target loaded: \"https://example.com/\" [HTTP 200] Title: \"Example Domain\"",
+        "stepId": "step-mv2r85yx-1"
+      },
+      {
+        "id": "log-mv2r86hm-6",
+        "timestamp": "12:25:26 AM",
+        "level": "info",
+        "message": "[Step #2] Executing ASSERT_VISIBLE: Verify that \"Example Domain\" is visible",
+        "stepId": "step-mv2r85yx-2"
+      },
+      {
+        "id": "log-mv2r8acy-7",
+        "timestamp": "12:25:31 AM",
+        "level": "warn",
+        "message": "Step #2 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Example Domain').first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2r85yx-2"
+      },
+      {
+        "id": "log-mv2r8ady-8",
+        "timestamp": "12:25:31 AM",
+        "level": "warn",
+        "message": "[SELF-HEALING] Recovery rejected: No candidate elements in live DOM met the minimum confidence threshold for \"Example Domain\".",
+        "stepId": "step-mv2r85yx-2"
+      },
+      {
+        "id": "log-mv2r8ady-9",
+        "timestamp": "12:25:31 AM",
+        "level": "error",
+        "message": "Step #2 permanently failed. Halting workflow.",
+        "stepId": "step-mv2r85yx-2"
+      },
+      {
+        "id": "log-mv2r8agu-10",
+        "timestamp": "12:25:31 AM",
+        "level": "info",
+        "message": "Playwright execution finished in 5841ms. Verdict: FAILED. (Healed: 0, Passed: 1, Failed: 1)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2r85yl-ggs1/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2r85yl-ggs1/step-2-failure.png"
+    ],
+    "executionTimeMs": 5841,
+    "summary": {
+      "totalSteps": 3,
+      "passedSteps": 1,
+      "failedSteps": 1,
+      "healedSteps": 0,
+      "outcomeVerdict": "FAILED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_ELEMENT_MISSING",
+      "label": "UI Element Missing / Selector Broken",
+      "source": "ui",
+      "details": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Example Domain').first() to be visible\u001b[22m\n"
+    }
+  },
+  {
+    "id": "run-mv2pdktg-i5yn",
+    "createdAt": "2026-10-10T18:03:38.788Z",
+    "completedAt": "2026-10-10T18:03:44.843Z",
+    "intent": {
+      "targetUrl": "http://localhost:3001/fixture?mutated=true",
+      "naturalLanguageInstruction": "Navigate to fixture, enter \"HealTest User\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible",
+      "allowLocalhost": true,
+      "timeoutMs": 15000,
+      "maxRetries": 2,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "HEALED",
+    "steps": [
+      {
+        "id": "step-mv2pdkti-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:3001/fixture?mutated=true)",
+        "selector": {},
+        "value": "http://localhost:3001/fixture?mutated=true",
+        "status": "passed",
+        "durationMs": 18,
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-1-after.png"
+      },
+      {
+        "id": "step-mv2pdkti-2",
+        "order": 2,
+        "type": "fill",
+        "description": "Enter \"HealTest User\" into field \"Feedback Input\"",
+        "selector": {
+          "role": "textbox",
+          "name": "Feedback Input",
+          "placeholder": "Feedback Input"
+        },
+        "value": "HealTest User",
+        "status": "passed",
+        "durationMs": 40,
+        "domSnapshotExcerpt": "<input type=\"text\" id=\"feedback-input\" placeholder=\"Type your feedback message\" aria-label=\"Feedback Input\" style=\"\">",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-2-after.png"
+      },
+      {
+        "id": "step-mv2pdkti-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"Submit Feedback\"",
+        "selector": {
+          "role": "button",
+          "name": "Send Feedback",
+          "ariaLabel": "Send Feedback",
+          "cssFallback": "#send-feedback-btn"
+        },
+        "status": "healed",
+        "durationMs": 5122,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-3-failure.png",
+        "healingRecord": {
+          "id": "heal-mv2pdp7g-6w5",
+          "stepId": "step-mv2pdkti-3",
+          "stepIndex": 2,
+          "originalAction": {
+            "type": "click",
+            "selector": {
+              "role": "button",
+              "name": "Submit Feedback",
+              "text": "Submit Feedback"
+            }
+          },
+          "failureReason": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n",
+          "detectedDomChanges": {
+            "previousExpected": "<button>Submit Feedback</button>",
+            "actualDetected": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "changeType": "attribute_changed"
+          },
+          "candidatesEvaluated": [
+            {
+              "selector": {
+                "role": "button",
+                "name": "Send Feedback",
+                "ariaLabel": "Send Feedback",
+                "cssFallback": "#send-feedback-btn"
+              },
+              "strategy": "aria_label_fallback",
+              "confidenceScore": 0.68,
+              "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+              "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+            }
+          ],
+          "chosenAlternative": {
+            "selector": {
+              "role": "button",
+              "name": "Send Feedback",
+              "ariaLabel": "Send Feedback",
+              "cssFallback": "#send-feedback-btn"
+            },
+            "strategy": "aria_label_fallback",
+            "confidenceScore": 0.68,
+            "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+          },
+          "explanation": "Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+          "confidenceScore": 0.68,
+          "healedAt": "2026-10-10T18:03:44.476Z"
+        },
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-3-healed.png"
+      },
+      {
+        "id": "step-mv2pdkti-4",
+        "order": 4,
+        "type": "assert_visible",
+        "description": "Verify that \"Feedback Submitted Successfully\" is visible",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 15,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: HealTest User</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-4-after.png"
+      },
+      {
+        "id": "step-mv2pdkti-5",
+        "order": 5,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 10,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: HealTest User</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-5-after.png"
+      }
+    ],
+    "healingRecords": [
+      {
+        "id": "heal-mv2pdp7g-6w5",
+        "stepId": "step-mv2pdkti-3",
+        "stepIndex": 2,
+        "originalAction": {
+          "type": "click",
+          "selector": {
+            "role": "button",
+            "name": "Submit Feedback",
+            "text": "Submit Feedback"
+          }
+        },
+        "failureReason": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n",
+        "detectedDomChanges": {
+          "previousExpected": "<button>Submit Feedback</button>",
+          "actualDetected": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+          "changeType": "attribute_changed"
+        },
+        "candidatesEvaluated": [
+          {
+            "selector": {
+              "role": "button",
+              "name": "Send Feedback",
+              "ariaLabel": "Send Feedback",
+              "cssFallback": "#send-feedback-btn"
+            },
+            "strategy": "aria_label_fallback",
+            "confidenceScore": 0.68,
+            "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+          }
+        ],
+        "chosenAlternative": {
+          "selector": {
+            "role": "button",
+            "name": "Send Feedback",
+            "ariaLabel": "Send Feedback",
+            "cssFallback": "#send-feedback-btn"
+          },
+          "strategy": "aria_label_fallback",
+          "confidenceScore": 0.68,
+          "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+          "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+        },
+        "explanation": "Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+        "confidenceScore": 0.68,
+        "healedAt": "2026-10-10T18:03:44.476Z"
+      }
+    ],
+    "logs": [
+      {
+        "id": "log-mv2pdkth-0",
+        "timestamp": "11:33:38 PM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:3001/fixture?mutated=true"
+      },
+      {
+        "id": "log-mv2pdkti-1",
+        "timestamp": "11:33:38 PM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to fixture, enter \"HealTest User\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible\""
+      },
+      {
+        "id": "log-mv2pdkti-2",
+        "timestamp": "11:33:38 PM",
+        "level": "info",
+        "message": "Decomposed intent into 5 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2pdkti-3",
+        "timestamp": "11:33:38 PM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2pdl1q-4",
+        "timestamp": "11:33:39 PM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:3001/fixture?mutated=true)",
+        "stepId": "step-mv2pdkti-1"
+      },
+      {
+        "id": "log-mv2pdl27-5",
+        "timestamp": "11:33:39 PM",
+        "level": "info",
+        "message": "Loaded target URL with HTTP status 200.",
+        "stepId": "step-mv2pdkti-1"
+      },
+      {
+        "id": "log-mv2pdl8i-6",
+        "timestamp": "11:33:39 PM",
+        "level": "info",
+        "message": "[Step #2] Executing FILL: Enter \"HealTest User\" into field \"Feedback Input\"",
+        "stepId": "step-mv2pdkti-2"
+      },
+      {
+        "id": "log-mv2pdl9m-7",
+        "timestamp": "11:33:39 PM",
+        "level": "info",
+        "message": "Entered value \"HealTest User\" into field.",
+        "stepId": "step-mv2pdkti-2"
+      },
+      {
+        "id": "log-mv2pdlan-8",
+        "timestamp": "11:33:39 PM",
+        "level": "info",
+        "message": "[Step #3] Executing CLICK: Click \"Submit Feedback\"",
+        "stepId": "step-mv2pdkti-3"
+      },
+      {
+        "id": "log-mv2pdp5p-9",
+        "timestamp": "11:33:44 PM",
+        "level": "warn",
+        "message": "Step #3 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2pdkti-3"
+      },
+      {
+        "id": "log-mv2pdp7g-10",
+        "timestamp": "11:33:44 PM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Discovered safe recovery candidate. Strategy: aria_label_fallback (68% confidence).",
+        "stepId": "step-mv2pdkti-3"
+      },
+      {
+        "id": "log-mv2pdp7g-11",
+        "timestamp": "11:33:44 PM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+        "stepId": "step-mv2pdkti-3"
+      },
+      {
+        "id": "log-mv2pdp8x-12",
+        "timestamp": "11:33:44 PM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Action retry succeeded with repaired locator! Workflow recovered.",
+        "stepId": "step-mv2pdkti-3"
+      },
+      {
+        "id": "log-mv2pdpap-13",
+        "timestamp": "11:33:44 PM",
+        "level": "info",
+        "message": "[Step #4] Executing ASSERT_VISIBLE: Verify that \"Feedback Submitted Successfully\" is visible",
+        "stepId": "step-mv2pdkti-4"
+      },
+      {
+        "id": "log-mv2pdpb4-14",
+        "timestamp": "11:33:44 PM",
+        "level": "info",
+        "message": "Verified outcome: Target is confirmed visible in viewport.",
+        "stepId": "step-mv2pdkti-4"
+      },
+      {
+        "id": "log-mv2pdpch-15",
+        "timestamp": "11:33:44 PM",
+        "level": "info",
+        "message": "[Step #5] Executing ASSERT_TEXT: Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "stepId": "step-mv2pdkti-5"
+      },
+      {
+        "id": "log-mv2pdpcr-16",
+        "timestamp": "11:33:44 PM",
+        "level": "info",
+        "message": "Verified outcome: Target is confirmed visible in viewport.",
+        "stepId": "step-mv2pdkti-5"
+      },
+      {
+        "id": "log-mv2pdphn-17",
+        "timestamp": "11:33:44 PM",
+        "level": "info",
+        "message": "Playwright execution finished in 6055ms. Verdict: HEALED. (Healed: 1, Passed: 4, Failed: 0)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-2-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-3-failure.png",
+      "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-3-healed.png",
+      "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-4-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2pdktg-i5yn/step-5-after.png"
+    ],
+    "executionTimeMs": 6055,
+    "summary": {
+      "totalSteps": 5,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "healedSteps": 1,
+      "outcomeVerdict": "HEALED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_HEALED",
+      "label": "UI Mutation Autonomously Healed",
+      "source": "ui",
+      "details": "Discovered and autonomously recovered 1 UI mutation(s) using accessible heuristics and verified ground truth outcome."
+    }
+  },
+  {
+    "id": "run-mv2pbpix-q36j",
+    "createdAt": "2026-10-10T18:02:11.577Z",
+    "completedAt": "2026-10-10T18:02:19.222Z",
+    "intent": {
+      "targetUrl": "http://localhost:5173",
+      "naturalLanguageInstruction": "look at the checkout button and check its functionality\n",
+      "allowLocalhost": true,
+      "timeoutMs": 15000,
+      "maxRetries": 2,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "FAILED",
+    "steps": [
+      {
+        "id": "step-mv2pbpiz-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:5173)",
+        "selector": {},
+        "value": "http://localhost:5173",
+        "status": "passed",
+        "durationMs": 1077,
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2pbpix-q36j/step-1-after.png"
+      },
+      {
+        "id": "step-mv2pbpiz-2",
+        "order": 2,
+        "type": "assert_visible",
+        "description": "Verify presence of \"look at the checkout button\"",
+        "selector": {
+          "text": "look at the checkout button"
+        },
+        "status": "failed",
+        "durationMs": 5080,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('look at the checkout button').first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2pbpix-q36j/step-2-failure.png"
+      },
+      {
+        "id": "step-mv2pbpiz-3",
+        "order": 3,
+        "type": "assert_visible",
+        "description": "Verify that \"its functionality\" is visible",
+        "selector": {
+          "text": "its functionality"
+        },
+        "value": "its functionality",
+        "status": "pending",
+        "durationMs": 0
+      },
+      {
+        "id": "step-mv2pbpiz-4",
+        "order": 4,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "pending",
+        "durationMs": 0
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2pbpiy-0",
+        "timestamp": "11:32:11 PM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:5173"
+      },
+      {
+        "id": "log-mv2pbpiz-1",
+        "timestamp": "11:32:11 PM",
+        "level": "info",
+        "message": "Intent instruction: \"look at the checkout button and check its functionality\n\""
+      },
+      {
+        "id": "log-mv2pbpj0-2",
+        "timestamp": "11:32:11 PM",
+        "level": "info",
+        "message": "Decomposed intent into 4 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2pbpj0-3",
+        "timestamp": "11:32:11 PM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2pbpsf-4",
+        "timestamp": "11:32:11 PM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:5173)",
+        "stepId": "step-mv2pbpiz-1"
+      },
+      {
+        "id": "log-mv2pbqmc-5",
+        "timestamp": "11:32:12 PM",
+        "level": "info",
+        "message": "Loaded target URL with HTTP status 200.",
+        "stepId": "step-mv2pbpiz-1"
+      },
+      {
+        "id": "log-mv2pbrdp-6",
+        "timestamp": "11:32:13 PM",
+        "level": "info",
+        "message": "[Step #2] Executing ASSERT_VISIBLE: Verify presence of \"look at the checkout button\"",
+        "stepId": "step-mv2pbpiz-2"
+      },
+      {
+        "id": "log-mv2pbv8n-7",
+        "timestamp": "11:32:18 PM",
+        "level": "warn",
+        "message": "Step #2 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('look at the checkout button').first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2pbpiz-2"
+      },
+      {
+        "id": "log-mv2pbvat-8",
+        "timestamp": "11:32:19 PM",
+        "level": "warn",
+        "message": "[SELF-HEALING] Recovery rejected: No candidate elements in live DOM met the minimum confidence threshold for \"look at the checkout button\".",
+        "stepId": "step-mv2pbpiz-2"
+      },
+      {
+        "id": "log-mv2pbvat-9",
+        "timestamp": "11:32:19 PM",
+        "level": "error",
+        "message": "Step #2 permanently failed. Halting workflow.",
+        "stepId": "step-mv2pbpiz-2"
+      },
+      {
+        "id": "log-mv2pbvfa-10",
+        "timestamp": "11:32:19 PM",
+        "level": "info",
+        "message": "Playwright execution finished in 7645ms. Verdict: FAILED. (Healed: 0, Passed: 1, Failed: 1)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2pbpix-q36j/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2pbpix-q36j/step-2-failure.png"
+    ],
+    "executionTimeMs": 7645,
+    "summary": {
+      "totalSteps": 4,
+      "passedSteps": 1,
+      "failedSteps": 1,
+      "healedSteps": 0,
+      "outcomeVerdict": "FAILED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_ELEMENT_MISSING",
+      "label": "UI Element Missing / Selector Broken",
+      "source": "ui",
+      "details": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('look at the checkout button').first() to be visible\u001b[22m\n"
+    }
+  },
+  {
+    "id": "run-mv2p6vso-sk22",
+    "createdAt": "2026-10-10T17:58:26.424Z",
+    "completedAt": "2026-10-10T17:58:32.196Z",
+    "intent": {
+      "targetUrl": "http://localhost:3001/fixture?broken=true",
+      "naturalLanguageInstruction": "Navigate to fixture, enter \"Unrecoverable Target\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible",
+      "allowLocalhost": true,
+      "timeoutMs": 10000,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "FAILED",
+    "steps": [
+      {
+        "id": "step-mv2p6vsp-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:3001/fixture?broken=true)",
+        "selector": {},
+        "value": "http://localhost:3001/fixture?broken=true",
+        "status": "passed",
+        "durationMs": 20,
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6vso-sk22/step-1-after.png"
+      },
+      {
+        "id": "step-mv2p6vsp-2",
+        "order": 2,
+        "type": "fill",
+        "description": "Enter \"Unrecoverable Target\" into field \"Feedback Input\"",
+        "selector": {
+          "role": "textbox",
+          "name": "Feedback Input",
+          "placeholder": "Feedback Input"
+        },
+        "value": "Unrecoverable Target",
+        "status": "passed",
+        "durationMs": 34,
+        "domSnapshotExcerpt": "<input type=\"text\" id=\"feedback-input\" placeholder=\"Type your feedback message\" aria-label=\"Feedback Input\" style=\"\">",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6vso-sk22/step-2-after.png"
+      },
+      {
+        "id": "step-mv2p6vsp-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"Submit Feedback\"",
+        "selector": {
+          "role": "button",
+          "name": "Submit Feedback",
+          "text": "Submit Feedback"
+        },
+        "status": "failed",
+        "durationMs": 5056,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2p6vso-sk22/step-3-failure.png"
+      },
+      {
+        "id": "step-mv2p6vsp-4",
+        "order": 4,
+        "type": "assert_visible",
+        "description": "Verify that \"Feedback Submitted Successfully\" is visible",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "pending",
+        "durationMs": 0
+      },
+      {
+        "id": "step-mv2p6vsp-5",
+        "order": 5,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "pending",
+        "durationMs": 0
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2p6vsp-0",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:3001/fixture?broken=true"
+      },
+      {
+        "id": "log-mv2p6vsp-1",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to fixture, enter \"Unrecoverable Target\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible\""
+      },
+      {
+        "id": "log-mv2p6vsp-2",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Decomposed intent into 5 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2p6vsp-3",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2p6w06-4",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:3001/fixture?broken=true)",
+        "stepId": "step-mv2p6vsp-1"
+      },
+      {
+        "id": "log-mv2p6w0q-5",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Loaded target URL with HTTP status 200.",
+        "stepId": "step-mv2p6vsp-1"
+      },
+      {
+        "id": "log-mv2p6w7g-6",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "[Step #2] Executing FILL: Enter \"Unrecoverable Target\" into field \"Feedback Input\"",
+        "stepId": "step-mv2p6vsp-2"
+      },
+      {
+        "id": "log-mv2p6w8d-7",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Entered value \"Unrecoverable Target\" into field.",
+        "stepId": "step-mv2p6vsp-2"
+      },
+      {
+        "id": "log-mv2p6w9q-8",
+        "timestamp": "11:28:27 PM",
+        "level": "info",
+        "message": "[Step #3] Executing CLICK: Click \"Submit Feedback\"",
+        "stepId": "step-mv2p6vsp-3"
+      },
+      {
+        "id": "log-mv2p704p-9",
+        "timestamp": "11:28:32 PM",
+        "level": "warn",
+        "message": "Step #3 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2p6vsp-3"
+      },
+      {
+        "id": "log-mv2p7066-10",
+        "timestamp": "11:28:32 PM",
+        "level": "warn",
+        "message": "[SELF-HEALING] Recovery rejected: No candidate elements in live DOM met the minimum confidence threshold for \"Submit Feedback\".",
+        "stepId": "step-mv2p6vsp-3"
+      },
+      {
+        "id": "log-mv2p7066-11",
+        "timestamp": "11:28:32 PM",
+        "level": "error",
+        "message": "Step #3 permanently failed. Halting workflow.",
+        "stepId": "step-mv2p6vsp-3"
+      },
+      {
+        "id": "log-mv2p7090-12",
+        "timestamp": "11:28:32 PM",
+        "level": "info",
+        "message": "Playwright execution finished in 5772ms. Verdict: FAILED. (Healed: 0, Passed: 2, Failed: 1)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2p6vso-sk22/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6vso-sk22/step-2-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6vso-sk22/step-3-failure.png"
+    ],
+    "executionTimeMs": 5772,
+    "summary": {
+      "totalSteps": 5,
+      "passedSteps": 2,
+      "failedSteps": 1,
+      "healedSteps": 0,
+      "outcomeVerdict": "FAILED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_ELEMENT_MISSING",
+      "label": "UI Element Missing / Selector Broken",
+      "source": "ui",
+      "details": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n"
+    }
+  },
+  {
+    "id": "run-mv2p6r61-8yqw",
+    "createdAt": "2026-10-10T17:58:20.425Z",
+    "completedAt": "2026-10-10T17:58:26.422Z",
+    "intent": {
+      "targetUrl": "http://localhost:3001/fixture?mutated=true",
+      "naturalLanguageInstruction": "Navigate to fixture, enter \"Stage 4 Self-Healing Test\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible",
+      "allowLocalhost": true,
+      "timeoutMs": 15000,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "HEALED",
+    "steps": [
+      {
+        "id": "step-mv2p6r62-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:3001/fixture?mutated=true)",
+        "selector": {},
+        "value": "http://localhost:3001/fixture?mutated=true",
+        "status": "passed",
+        "durationMs": 28,
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-1-after.png"
+      },
+      {
+        "id": "step-mv2p6r62-2",
+        "order": 2,
+        "type": "fill",
+        "description": "Enter \"Stage 4 Self-Healing Test\" into field \"Feedback Input\"",
+        "selector": {
+          "role": "textbox",
+          "name": "Feedback Input",
+          "placeholder": "Feedback Input"
+        },
+        "value": "Stage 4 Self-Healing Test",
+        "status": "passed",
+        "durationMs": 43,
+        "domSnapshotExcerpt": "<input type=\"text\" id=\"feedback-input\" placeholder=\"Type your feedback message\" aria-label=\"Feedback Input\" style=\"\">",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-2-after.png"
+      },
+      {
+        "id": "step-mv2p6r62-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"Submit Feedback\"",
+        "selector": {
+          "role": "button",
+          "name": "Send Feedback",
+          "ariaLabel": "Send Feedback",
+          "cssFallback": "#send-feedback-btn"
+        },
+        "status": "healed",
+        "durationMs": 5080,
+        "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n",
+        "screenshotBeforeUrl": "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-3-failure.png",
+        "healingRecord": {
+          "id": "heal-mv2p6vkw-97v",
+          "stepId": "step-mv2p6r62-3",
+          "stepIndex": 2,
+          "originalAction": {
+            "type": "click",
+            "selector": {
+              "role": "button",
+              "name": "Submit Feedback",
+              "text": "Submit Feedback"
+            }
+          },
+          "failureReason": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n",
+          "detectedDomChanges": {
+            "previousExpected": "<button>Submit Feedback</button>",
+            "actualDetected": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "changeType": "attribute_changed"
+          },
+          "candidatesEvaluated": [
+            {
+              "selector": {
+                "role": "button",
+                "name": "Send Feedback",
+                "ariaLabel": "Send Feedback",
+                "cssFallback": "#send-feedback-btn"
+              },
+              "strategy": "aria_label_fallback",
+              "confidenceScore": 0.68,
+              "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+              "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+            }
+          ],
+          "chosenAlternative": {
+            "selector": {
+              "role": "button",
+              "name": "Send Feedback",
+              "ariaLabel": "Send Feedback",
+              "cssFallback": "#send-feedback-btn"
+            },
+            "strategy": "aria_label_fallback",
+            "confidenceScore": 0.68,
+            "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+          },
+          "explanation": "Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+          "confidenceScore": 0.68,
+          "healedAt": "2026-10-10T17:58:26.144Z"
+        },
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-3-healed.png"
+      },
+      {
+        "id": "step-mv2p6r62-4",
+        "order": 4,
+        "type": "assert_visible",
+        "description": "Verify that \"Feedback Submitted Successfully\" is visible",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 10,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Stage 4 Self-Healing Test</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-4-after.png"
+      },
+      {
+        "id": "step-mv2p6r62-5",
+        "order": 5,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 9,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Stage 4 Self-Healing Test</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-5-after.png"
+      }
+    ],
+    "healingRecords": [
+      {
+        "id": "heal-mv2p6vkw-97v",
+        "stepId": "step-mv2p6r62-3",
+        "stepIndex": 2,
+        "originalAction": {
+          "type": "click",
+          "selector": {
+            "role": "button",
+            "name": "Submit Feedback",
+            "text": "Submit Feedback"
+          }
+        },
+        "failureReason": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n",
+        "detectedDomChanges": {
+          "previousExpected": "<button>Submit Feedback</button>",
+          "actualDetected": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+          "changeType": "attribute_changed"
+        },
+        "candidatesEvaluated": [
+          {
+            "selector": {
+              "role": "button",
+              "name": "Send Feedback",
+              "ariaLabel": "Send Feedback",
+              "cssFallback": "#send-feedback-btn"
+            },
+            "strategy": "aria_label_fallback",
+            "confidenceScore": 0.68,
+            "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+            "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+          }
+        ],
+        "chosenAlternative": {
+          "selector": {
+            "role": "button",
+            "name": "Send Feedback",
+            "ariaLabel": "Send Feedback",
+            "cssFallback": "#send-feedback-btn"
+          },
+          "strategy": "aria_label_fallback",
+          "confidenceScore": 0.68,
+          "domSnippet": "<button id=\"send-feedback-btn\" class=\"btn-mutated\" role=\"button\" aria-label=\"Send Feedback\">Send Feedback</button>",
+          "matchReason": "Fuzzy text similarity match (67%) on element aria-label."
+        },
+        "explanation": "Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+        "confidenceScore": 0.68,
+        "healedAt": "2026-10-10T17:58:26.144Z"
+      }
+    ],
+    "logs": [
+      {
+        "id": "log-mv2p6r62-0",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:3001/fixture?mutated=true"
+      },
+      {
+        "id": "log-mv2p6r62-1",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to fixture, enter \"Stage 4 Self-Healing Test\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible\""
+      },
+      {
+        "id": "log-mv2p6r62-2",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Decomposed intent into 5 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2p6r62-3",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2p6re0-4",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:3001/fixture?mutated=true)",
+        "stepId": "step-mv2p6r62-1"
+      },
+      {
+        "id": "log-mv2p6res-5",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Loaded target URL with HTTP status 200.",
+        "stepId": "step-mv2p6r62-1"
+      },
+      {
+        "id": "log-mv2p6rlx-6",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "[Step #2] Executing FILL: Enter \"Stage 4 Self-Healing Test\" into field \"Feedback Input\"",
+        "stepId": "step-mv2p6r62-2"
+      },
+      {
+        "id": "log-mv2p6rn4-7",
+        "timestamp": "11:28:21 PM",
+        "level": "info",
+        "message": "Entered value \"Stage 4 Self-Healing Test\" into field.",
+        "stepId": "step-mv2p6r62-2"
+      },
+      {
+        "id": "log-mv2p6rof-8",
+        "timestamp": "11:28:21 PM",
+        "level": "info",
+        "message": "[Step #3] Executing CLICK: Click \"Submit Feedback\"",
+        "stepId": "step-mv2p6r62-3"
+      },
+      {
+        "id": "log-mv2p6vjj-9",
+        "timestamp": "11:28:26 PM",
+        "level": "warn",
+        "message": "Step #3 failed: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit Feedback' }).first() to be visible\u001b[22m\n. Inspecting DOM for dynamic mutations...",
+        "stepId": "step-mv2p6r62-3"
+      },
+      {
+        "id": "log-mv2p6vkw-10",
+        "timestamp": "11:28:26 PM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Discovered safe recovery candidate. Strategy: aria_label_fallback (68% confidence).",
+        "stepId": "step-mv2p6r62-3"
+      },
+      {
+        "id": "log-mv2p6vkw-11",
+        "timestamp": "11:28:26 PM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Action on [button: \"Submit Feedback\"] failed. Inspecting live DOM discovered replacement with 68% confidence using strategy \"aria_label_fallback\". Recovered to: {\"role\":\"button\",\"name\":\"Send Feedback\",\"ariaLabel\":\"Send Feedback\",\"cssFallback\":\"#send-feedback-btn\"}.",
+        "stepId": "step-mv2p6r62-3"
+      },
+      {
+        "id": "log-mv2p6vlj-12",
+        "timestamp": "11:28:26 PM",
+        "level": "heal",
+        "message": "[SELF-HEALING] Action retry succeeded with repaired locator! Workflow recovered.",
+        "stepId": "step-mv2p6r62-3"
+      },
+      {
+        "id": "log-mv2p6vml-13",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "[Step #4] Executing ASSERT_VISIBLE: Verify that \"Feedback Submitted Successfully\" is visible",
+        "stepId": "step-mv2p6r62-4"
+      },
+      {
+        "id": "log-mv2p6vmu-14",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Verified outcome: Target is confirmed visible in viewport.",
+        "stepId": "step-mv2p6r62-4"
+      },
+      {
+        "id": "log-mv2p6vnz-15",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "[Step #5] Executing ASSERT_TEXT: Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "stepId": "step-mv2p6r62-5"
+      },
+      {
+        "id": "log-mv2p6vo8-16",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Verified outcome: Target is confirmed visible in viewport.",
+        "stepId": "step-mv2p6r62-5"
+      },
+      {
+        "id": "log-mv2p6vsm-17",
+        "timestamp": "11:28:26 PM",
+        "level": "info",
+        "message": "Playwright execution finished in 5997ms. Verdict: HEALED. (Healed: 1, Passed: 4, Failed: 0)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-2-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-3-failure.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-3-healed.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-4-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6r61-8yqw/step-5-after.png"
+    ],
+    "executionTimeMs": 5997,
+    "summary": {
+      "totalSteps": 5,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "healedSteps": 1,
+      "outcomeVerdict": "HEALED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "UI_HEALED",
+      "label": "UI Mutation Autonomously Healed",
+      "source": "ui",
+      "details": "Discovered and autonomously recovered 1 UI mutation(s) using accessible heuristics and verified ground truth outcome."
+    }
+  },
+  {
+    "id": "run-mv2p6qg5-y744",
+    "createdAt": "2026-10-10T17:58:19.493Z",
+    "completedAt": "2026-10-10T17:58:20.419Z",
+    "intent": {
+      "targetUrl": "http://localhost:3001/fixture",
+      "naturalLanguageInstruction": "Navigate to fixture, enter \"Shivansh Patel\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible",
+      "allowLocalhost": true,
+      "timeoutMs": 15000,
+      "customSuccessCriteria": "Feedback Submitted Successfully"
+    },
+    "status": "PASSED",
+    "steps": [
+      {
+        "id": "step-mv2p6qgg-1",
+        "order": 1,
+        "type": "navigate",
+        "description": "Navigate to target URL (http://localhost:3001/fixture)",
+        "selector": {},
+        "value": "http://localhost:3001/fixture",
+        "status": "passed",
+        "durationMs": 22,
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-1-after.png"
+      },
+      {
+        "id": "step-mv2p6qgg-2",
+        "order": 2,
+        "type": "fill",
+        "description": "Enter \"Shivansh Patel\" into field \"Feedback Input\"",
+        "selector": {
+          "role": "textbox",
+          "name": "Feedback Input",
+          "placeholder": "Feedback Input"
+        },
+        "value": "Shivansh Patel",
+        "status": "passed",
+        "durationMs": 45,
+        "domSnapshotExcerpt": "<input type=\"text\" id=\"feedback-input\" placeholder=\"Type your feedback message\" aria-label=\"Feedback Input\" style=\"\">",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-2-after.png"
+      },
+      {
+        "id": "step-mv2p6qgg-3",
+        "order": 3,
+        "type": "click",
+        "description": "Click \"Submit Feedback\"",
+        "selector": {
+          "role": "button",
+          "name": "Submit Feedback",
+          "text": "Submit Feedback"
+        },
+        "status": "passed",
+        "durationMs": 31,
+        "domSnapshotExcerpt": "<button id=\"submit-btn\" role=\"button\">Submit Feedback</button>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-3-after.png"
+      },
+      {
+        "id": "step-mv2p6qgg-4",
+        "order": 4,
+        "type": "assert_visible",
+        "description": "Verify that \"Feedback Submitted Successfully\" is visible",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 11,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Shivansh Patel</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-4-after.png"
+      },
+      {
+        "id": "step-mv2p6qgg-5",
+        "order": 5,
+        "type": "assert_text",
+        "description": "Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "selector": {
+          "text": "Feedback Submitted Successfully"
+        },
+        "value": "Feedback Submitted Successfully",
+        "status": "passed",
+        "durationMs": 10,
+        "domSnapshotExcerpt": "<div id=\"status-banner\" role=\"status\" style=\"display: block;\">Feedback Submitted Successfully: Shivansh Patel</div>",
+        "screenshotAfterUrl": "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-5-after.png"
+      }
+    ],
+    "healingRecords": [],
+    "logs": [
+      {
+        "id": "log-mv2p6qg5-0",
+        "timestamp": "11:28:19 PM",
+        "level": "info",
+        "message": "Initializing Playwright execution engine for target: http://localhost:3001/fixture"
+      },
+      {
+        "id": "log-mv2p6qgg-1",
+        "timestamp": "11:28:19 PM",
+        "level": "info",
+        "message": "Intent instruction: \"Navigate to fixture, enter \"Shivansh Patel\" into \"Feedback Input\", click \"Submit Feedback\", verify \"Feedback Submitted Successfully\" is visible\""
+      },
+      {
+        "id": "log-mv2p6qgh-2",
+        "timestamp": "11:28:19 PM",
+        "level": "info",
+        "message": "Decomposed intent into 5 atomic actions using accessible semantics."
+      },
+      {
+        "id": "log-mv2p6qgh-3",
+        "timestamp": "11:28:19 PM",
+        "level": "info",
+        "message": "Launching Chromium binary at C:\\Users\\Shivansh patel\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe (headless: true)..."
+      },
+      {
+        "id": "log-mv2p6qp4-4",
+        "timestamp": "11:28:19 PM",
+        "level": "info",
+        "message": "[Step #1] Executing NAVIGATE: Navigate to target URL (http://localhost:3001/fixture)",
+        "stepId": "step-mv2p6qgg-1"
+      },
+      {
+        "id": "log-mv2p6qpq-5",
+        "timestamp": "11:28:19 PM",
+        "level": "info",
+        "message": "Loaded target URL with HTTP status 200.",
+        "stepId": "step-mv2p6qgg-1"
+      },
+      {
+        "id": "log-mv2p6qvv-6",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "[Step #2] Executing FILL: Enter \"Shivansh Patel\" into field \"Feedback Input\"",
+        "stepId": "step-mv2p6qgg-2"
+      },
+      {
+        "id": "log-mv2p6qx4-7",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Entered value \"Shivansh Patel\" into field.",
+        "stepId": "step-mv2p6qgg-2"
+      },
+      {
+        "id": "log-mv2p6qy3-8",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "[Step #3] Executing CLICK: Click \"Submit Feedback\"",
+        "stepId": "step-mv2p6qgg-3"
+      },
+      {
+        "id": "log-mv2p6qyx-9",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Dispatched click to accessible target \"Click \"Submit Feedback\"\".",
+        "stepId": "step-mv2p6qgg-3"
+      },
+      {
+        "id": "log-mv2p6qzx-10",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "[Step #4] Executing ASSERT_VISIBLE: Verify that \"Feedback Submitted Successfully\" is visible",
+        "stepId": "step-mv2p6qgg-4"
+      },
+      {
+        "id": "log-mv2p6r08-11",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Verified outcome: Target is confirmed visible in viewport.",
+        "stepId": "step-mv2p6qgg-4"
+      },
+      {
+        "id": "log-mv2p6r1b-12",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "[Step #5] Executing ASSERT_TEXT: Verify ground truth outcome: \"Feedback Submitted Successfully\"",
+        "stepId": "step-mv2p6qgg-5"
+      },
+      {
+        "id": "log-mv2p6r1l-13",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Verified outcome: Target is confirmed visible in viewport.",
+        "stepId": "step-mv2p6qgg-5"
+      },
+      {
+        "id": "log-mv2p6r5v-14",
+        "timestamp": "11:28:20 PM",
+        "level": "info",
+        "message": "Playwright execution finished in 926ms. Verdict: PASSED. (Healed: 0, Passed: 5, Failed: 0)."
+      }
+    ],
+    "screenshots": [
+      "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-1-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-2-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-3-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-4-after.png",
+      "http://localhost:3001/api/screenshots/run-mv2p6qg5-y744/step-5-after.png"
+    ],
+    "executionTimeMs": 926,
+    "summary": {
+      "totalSteps": 5,
+      "passedSteps": 5,
+      "failedSteps": 0,
+      "healedSteps": 0,
+      "outcomeVerdict": "PASSED",
+      "safetyCheckPassed": true
+    },
+    "errorClassification": {
+      "category": "NONE",
+      "label": "Clean Pass (No Errors)",
+      "source": "none",
+      "details": "All steps executed and verified successfully without UI mutations or system faults."
+    }
+  }
+]

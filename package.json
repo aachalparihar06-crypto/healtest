@@ -1,0 +1,24 @@
+{
+  "name": "healtest-monorepo",
+  "version": "1.0.0",
+  "description": "HealTest - Generic Intent-Based Self-Healing E2E Testing Platform",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n \"backend,frontend\" -c \"blue,magenta\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "start": "npm run dev",
+    "build": "npm --prefix frontend run build && npm --prefix backend run build",
+    "test:stage2": "npm --prefix backend run test:stage2",
+    "test:stage3": "npm --prefix backend run test:stage3",
+    "test:stage4": "npm --prefix backend run test:stage4"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "engine"
+  ],
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
