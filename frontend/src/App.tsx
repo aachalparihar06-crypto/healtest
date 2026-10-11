@@ -27,6 +27,28 @@ export const App: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState<NavigationPage>(getInitialPage());
 
+  // Light / Dark Theme State (White theme default)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('healtest_theme');
+    return saved === 'dark' ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.remove('dark');
+      root.classList.add('light');
+    }
+    localStorage.setItem('healtest_theme', theme);
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
   // Listen to hash changes for browser forward/back buttons
   useEffect(() => {
     const handleHashChange = () => {
@@ -56,7 +78,7 @@ export const App: React.FC = () => {
     allowLocalhost: true,
     timeoutMs: 15000,
     maxRetries: 2,
-    customSuccessCriteria: 'Feedback Submitted Successfully',
+    customSuccessCriteria: '',
   });
 
   // Backend Health State
@@ -154,7 +176,7 @@ export const App: React.FC = () => {
   const healedRunsCount = runs.filter((r) => r.healingRecords && r.healingRecords.length > 0).length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
       {/* Top Navigation Bar with Page Switcher */}
       <Navbar
         currentPage={currentPage}
@@ -164,6 +186,8 @@ export const App: React.FC = () => {
         allowLocalhost={intent.allowLocalhost}
         totalRunsCount={runs.length}
         healedRunsCount={healedRunsCount}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
       />
 
       {/* Main Page Area */}
@@ -234,7 +258,7 @@ export const App: React.FC = () => {
       </main>
 
       {/* Clean Minimal Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 py-4 text-center text-xs text-slate-500 font-mono">
+      <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 py-4 text-center text-xs text-slate-500 font-mono transition-colors">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>HealTest Platform • Autonomous Intent-Based E2E Testing</span>
           <span className="text-slate-600">Headless Chromium • Playwright • Express REST API</span>

@@ -34,7 +34,12 @@ export function validateTargetUrl(rawUrl: string, allowLocalhost: boolean): Safe
   // Ensure scheme is provided
   let urlObj: URL;
   try {
-    const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    const isExplicitHttp = /^https?:\/\//i.test(trimmed);
+    let withScheme = trimmed;
+    if (!isExplicitHttp) {
+      const isLikelyLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|::1|192\.168\.|10\.|172\.(1[6-9]|2\d|3[0-1]))/i.test(trimmed);
+      withScheme = isLikelyLocal ? `http://${trimmed}` : `https://${trimmed}`;
+    }
     urlObj = new URL(withScheme);
   } catch {
     return {

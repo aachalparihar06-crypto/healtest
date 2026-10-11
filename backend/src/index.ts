@@ -286,13 +286,14 @@ app.post('/api/runs', async (req, res) => {
   }
 
   // Safety checks
-  const safety = validateBackendTargetUrl(intent.targetUrl, intent.allowLocalhost ?? false);
+  const safety = validateBackendTargetUrl(intent.targetUrl, intent.allowLocalhost ?? true);
   if (!safety.isValid) {
     return res.status(403).json({
       error: safety.blockedReason || 'URL blocked by safety policy.',
       safety,
     });
   }
+  intent.targetUrl = safety.sanitizedUrl || intent.targetUrl;
 
   try {
     console.log(`[HealTest API] Dispatching Playwright test for: ${intent.targetUrl}`);
@@ -303,11 +304,166 @@ app.post('/api/runs', async (req, res) => {
     runsStore.unshift(completedRun);
     persistRunsHistory(runsStore);
     res.json(completedRun);
-  } catch (err) {
+  } catch (err: any) {
     console.error('[HealTest API] Fatal execution error:', err);
+    const fatalRun: TestRun = {
+      id: `run-${Date.now().toString(36)}-err`,
+      createdAt: new Date().toISOString(),
+      completedAt: new Date().toISOString(),
+      intent,
+      status: 'ERROR',
+      steps: [
+        {
+          id: `step-err-1`,
+          order: 1,
+          type: 'navigate',
+          description: `Navigate to target: ${intent.targetUrl}`,
+          selector: {},
+          status: 'error',
+          durationMs: 0,
+          error: err.message || String(err),
+        }
+      ],
+      healingRecords: [],
+      logs: [
+        {
+          id: `log-err-1`,
+          timestamp: new Date().toLocaleTimeString(),
+          level: 'error',
+          message: `Fatal execution engine error: ${err.message || String(err)}`,
+        }
+      ],
+      screenshots: [],
+      executionTimeMs: 0,
+      summary: {
+        totalSteps: 1,
+        passedSteps: 0,
+        failedSteps: 0,
+        healedSteps: 0,
+        blockedSteps: 0,
+        outcomeVerdict: 'ERROR',
+        safetyCheckPassed: true,
+      },
+      errorClassification: {
+        category: 'SYSTEM_ERROR',
+        label: 'Fatal Runner Infrastructure Crash',
+        source: 'system',
+        details: err.message || String(err),
+      },
+    };
+    runsStore.unshift(fatalRun);
+    persistRunsHistory(runsStore);
     res.status(500).json({
-      error: `Execution failed: ${(err as Error).message}`,
+      error: `Execution failed: ${err.message}`,
+      run: fatalRun,
     });
+  }
+});
+
+/**
+ * Live DOM & Accessibility Inspection endpoint using Playwright
+ */
+app.post('/api/inspect', async (req, res) => {
+  const { url, allowLocalhost = true, timeoutMs = 12000 } = req.body;
+  if (!url || typeof url !== 'string') {
+    return res.status(400).json({ error: 'Target URL is required.' });
+  }
+
+  const safety = validateBackendTargetUrl(url, Boolean(allowLocalhost));
+  if (!safety.isValid) {
+    return res.status(403).json({
+      error: safety.blockedReason || 'Target URL blocked by safety policy.',
+      safety,
+    });
+  }
+
+  const targetUrl = safety.sanitizedUrl || url;
+
+  try {
+    console.log(`[HealTest API] Live DOM inspection requested for: ${targetUrl}`);
+    const inspectionResult = await executor.inspectPage(targetUrl, Number(timeoutMs) || 12000);
+    res.json(inspectionResult);
+  } catch (err: any) {
+    console.error('[HealTest API] Inspection failed:', err);
+    res.status(500).json({
+      error: `Live inspection failed: ${err.message}`,
+    });
+  }
+});
+
+/**
+ * Embedded Browser Preview Proxy endpoint
+ * Strips framing restriction headers (X-Frame-Options, CSP frame-ancestors)
+ * so target apps (including localhost) can be rendered inside HealTest's embedded frame.
+ */
+app.get('/api/preview/proxy', async (req, res) => {
+  const rawTargetUrl = req.query.url as string;
+  if (!rawTargetUrl) {
+    return res.status(400).send('Missing "url" query parameter.');
+  }
+
+  let targetUrl = rawTargetUrl;
+
+  try {
+    const safety = validateBackendTargetUrl(rawTargetUrl, true);
+    if (!safety.isValid) {
+      return res.status(403).send(`Blocked URL: ${safety.blockedReason}`);
+    }
+
+    targetUrl = safety.sanitizedUrl || rawTargetUrl;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(targetUrl, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) HealTest-PreviewProxy/1.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      },
+    });
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      return res.status(response.status).send(`Target returned HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    let html = await response.text();
+
+    // Ensure relative assets (images, css, scripts) resolve against target origin
+    const baseTag = `<base href="${targetUrl}">`;
+    if (html.toLowerCase().includes('<head>')) {
+      html = html.replace(/<head>/i, `<head>\n  ${baseTag}`);
+    } else {
+      html = `${baseTag}\n${html}`;
+    }
+
+    // Set permissive frame headers for embedded preview
+    res.removeHeader('X-Frame-Options');
+    res.setHeader('Content-Security-Policy', "frame-ancestors * 'self'");
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('X-HealTest-Proxied', 'true');
+    res.send(html);
+  } catch (err: any) {
+    console.error(`[HealTest Preview Proxy] Failed to proxy "${targetUrl}":`, err.message);
+    res.status(502).send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { font-family: ui-sans-serif, system-ui, sans-serif; background: #090d16; color: #94a3b8; padding: 32px; text-align: center; }
+            h2 { color: #f87171; margin-bottom: 8px; font-size: 18px; }
+            p { font-size: 13px; line-height: 1.6; }
+            code { background: #1e293b; color: #f1f5f9; padding: 3px 6px; border-radius: 4px; font-family: monospace; }
+          </style>
+        </head>
+        <body>
+          <h2>Target Page Unreachable via Proxy</h2>
+          <p>Could not connect to: <code>${targetUrl}</code></p>
+          <p>Error details: ${err.message}</p>
+          <p>Verify that your target server is actively running and accessible.</p>
+        </body>
+      </html>
+    `);
   }
 });
 
@@ -320,7 +476,10 @@ app.delete('/api/runs', (req, res) => {
   res.json({ success: true, message: 'All test run history cleared.' });
 });
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+
+
+
+const server = app.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`====================================================`);
   console.log(`  HealTest Backend API operational on port ${PORT}`);
   console.log(`  Health Check:    http://localhost:${PORT}/api/health`);

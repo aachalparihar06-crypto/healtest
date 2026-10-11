@@ -121,17 +121,18 @@ export function evaluateSelfHealingCandidates(
     let matchReason = '';
 
     const elText = el.innerText || '';
-    const elLabel = el.ariaLabel || '';
+    const elLabel = el.label || el.ariaLabel || '';
     const elPlaceholder = el.placeholder || '';
-    const elEffectiveName = elLabel || elText || elPlaceholder;
+    const elValue = (el.attributes && el.attributes['value']) || '';
+    const elEffectiveName = elLabel || elText || elPlaceholder || elValue;
 
     // 1. Role matching
     let roleMatches = false;
     if (expectedRole) {
       if (expectedRole === 'button') {
-        roleMatches = el.role === 'button' || el.tagName === 'button' || el.tagName === 'a' || el.role === 'link';
+        roleMatches = el.role === 'button' || el.tagName === 'button' || el.tagName === 'a' || el.role === 'link' || (el.tagName === 'input' && (el.type === 'submit' || el.type === 'button'));
       } else if (expectedRole === 'textbox') {
-        roleMatches = el.role === 'textbox' || el.tagName === 'input' || el.tagName === 'textarea';
+        roleMatches = el.role === 'textbox' || (el.tagName === 'input' && el.type !== 'submit' && el.type !== 'button' && el.type !== 'reset') || el.tagName === 'textarea';
       } else {
         roleMatches = el.role === expectedRole || el.tagName === expectedRole;
       }
@@ -153,7 +154,7 @@ export function evaluateSelfHealingCandidates(
         if (sim > 0.6) {
           score += 0.50 * sim;
           strategy = elLabel ? 'aria_label_fallback' : 'text_content_fuzzy';
-          matchReason = `Fuzzy text similarity match (${Math.round(sim * 100)}%) on element ${elLabel ? 'aria-label' : 'text'}.`;
+          matchReason = `Fuzzy text similarity match (${Math.round(sim * 100)}%) on element ${elLabel ? 'label/aria' : 'text'}.`;
         }
       }
     }
@@ -182,7 +183,9 @@ export function evaluateSelfHealingCandidates(
       if (el.role || (el.tagName === 'button' ? 'button' : null)) {
         replacementSelector.role = el.role || (el.tagName === 'button' ? 'button' : undefined);
       }
-      if (el.ariaLabel) {
+      if (el.label) {
+        replacementSelector.name = el.label;
+      } else if (el.ariaLabel) {
         replacementSelector.name = el.ariaLabel;
         replacementSelector.ariaLabel = el.ariaLabel;
       } else if (el.innerText) {
@@ -190,6 +193,10 @@ export function evaluateSelfHealingCandidates(
         replacementSelector.text = el.innerText;
       } else if (el.placeholder) {
         replacementSelector.placeholder = el.placeholder;
+      }
+
+      if (el.attributes && (el.attributes['data-testid'] || el.attributes['data-test'])) {
+        replacementSelector.testId = el.attributes['data-testid'] || el.attributes['data-test'];
       }
 
       if (el.id) {

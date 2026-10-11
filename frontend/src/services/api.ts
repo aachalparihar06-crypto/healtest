@@ -1,4 +1,4 @@
-import type { TestRun, TestIntent } from '../types';
+import type { TestRun, TestIntent, DomInspectionResult } from '../types';
 import { classifyTestRun } from '../types';
 
 const DEFAULT_API_BASE = 'http://localhost:3001/api';
@@ -134,6 +134,35 @@ export const apiService = {
   },
 
   /**
+   * Inspect a live target URL using Playwright without running tests
+   */
+  async inspectUrl(url: string, allowLocalhost: boolean = true, timeoutMs: number = 15000): Promise<DomInspectionResult> {
+    const baseUrl = getApiBaseUrl();
+    const res = await fetch(`${baseUrl}/inspect`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, allowLocalhost, timeoutMs }),
+      signal: AbortSignal.timeout(timeoutMs + 5000),
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `Inspection failed with status ${res.status}`);
+    }
+
+    return await res.json();
+  },
+
+  /**
+   * Get safe proxy URL for embedded iframe preview
+   */
+  getProxyPreviewUrl(targetUrl: string): string {
+    const baseUrl = getApiBaseUrl();
+    const rootOrigin = baseUrl.replace(/\/api$/, '');
+    return `${rootOrigin}/api/preview/proxy?url=${encodeURIComponent(targetUrl)}`;
+  },
+
+  /**
    * Clear test runs history on the backend
    */
   async clearHistory(): Promise<boolean> {
@@ -146,3 +175,4 @@ export const apiService = {
     }
   },
 };
+

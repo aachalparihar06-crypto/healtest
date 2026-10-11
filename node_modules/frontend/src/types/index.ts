@@ -1,6 +1,6 @@
 // Shared Data Contracts & Types for HealTest Platform
 
-export type TestStatus = 'IDLE' | 'PENDING' | 'RUNNING' | 'PASSED' | 'FAILED' | 'HEALED';
+export type TestStatus = 'IDLE' | 'PENDING' | 'RUNNING' | 'PASSED' | 'FAILED' | 'HEALED' | 'ERROR';
 
 export type ActionType = 
   | 'navigate' 
@@ -11,6 +11,8 @@ export type ActionType =
   | 'press' 
   | 'assert_text' 
   | 'assert_visible' 
+  | 'assert_enabled' 
+  | 'assert_disabled' 
   | 'wait';
 
 export type HealingStrategy = 
@@ -69,7 +71,7 @@ export interface TestStep {
   description: string;
   selector: ActionSelector;
   value?: string;
-  status: 'pending' | 'running' | 'passed' | 'failed' | 'healed';
+  status: 'pending' | 'running' | 'passed' | 'failed' | 'healed' | 'blocked' | 'skipped' | 'error';
   durationMs: number;
   error?: string;
   healingRecord?: HealingRecord;
@@ -111,7 +113,9 @@ export interface TestRun {
     passedSteps: number;
     failedSteps: number;
     healedSteps: number;
-    outcomeVerdict: 'PASSED' | 'FAILED' | 'HEALED' | 'NOT_RUN';
+    blockedSteps?: number;
+    skippedSteps?: number;
+    outcomeVerdict: 'PASSED' | 'FAILED' | 'HEALED' | 'ERROR' | 'NOT_RUN';
     safetyCheckPassed: boolean;
   };
   errorClassification?: ErrorClassification;
@@ -132,6 +136,44 @@ export interface ErrorClassification {
   label: string;
   details?: string;
   source: 'ui' | 'system' | 'application' | 'none';
+}
+
+export interface InspectedElement {
+  tagName: string;
+  role: string | null;
+  innerText: string;
+  ariaLabel: string | null;
+  placeholder: string | null;
+  id: string | null;
+  name: string | null;
+  type: string | null;
+  classes: string;
+  outerHtml: string;
+  isVisible: boolean;
+  isEnabled: boolean;
+  label?: string | null;
+  attributes?: Record<string, string>;
+  frameUrl?: string | null;
+  suggestedAction?: string;
+}
+
+export interface DomInspectionResult {
+  targetUrl: string;
+  finalUrl: string;
+  pageTitle: string;
+  httpStatus: number | null;
+  inspectedAt: string;
+  durationMs: number;
+  elements: InspectedElement[];
+  summary: {
+    totalElements: number;
+    buttonsCount: number;
+    inputsCount: number;
+    linksCount: number;
+    textElementsCount: number;
+  };
+  errors: string[];
+  screenshotUrl?: string;
 }
 
 export interface SafetyValidationResult {
@@ -166,8 +208,8 @@ export function classifyTestRun(run: TestRun): ErrorClassification {
     };
   }
 
-  if (run.status === 'FAILED') {
-    const failedStep = run.steps.find((s) => s.status === 'failed');
+  if (run.status === 'FAILED' || run.status === 'ERROR') {
+    const failedStep = run.steps.find((s) => s.status === 'failed' || s.status === 'error');
     const errMsg = failedStep?.error || run.logs.find((l) => l.level === 'error')?.message || '';
     const lower = errMsg.toLowerCase();
 
@@ -233,12 +275,12 @@ export function classifyTestRun(run: TestRun): ErrorClassification {
       };
     }
 
-    if (lower.includes('chromium') || lower.includes('browser') || lower.includes('fatal error') || lower.includes('runtime')) {
+    if (lower.includes('chromium') || lower.includes('browser') || lower.includes('fatal error') || lower.includes('runtime') || run.status === 'ERROR') {
       return {
         category: 'SYSTEM_ERROR',
-        label: 'Execution Engine / System Runtime Error',
+        label: 'Execution Engine / Runner Infrastructure Error',
         source: 'system',
-        details: errMsg || 'Playwright engine runtime encountered an unexpected system error.'
+        details: errMsg || 'Playwright engine runtime encountered an unexpected runner/infrastructure error.'
       };
     }
 

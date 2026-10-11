@@ -11,7 +11,7 @@ export function isLocalOrPrivateNetwork(hostname: string): boolean {
   return false;
 }
 
-export function validateBackendTargetUrl(rawUrl: string, allowLocalhost: boolean): SafetyValidationResult {
+export function validateBackendTargetUrl(rawUrl: string, allowLocalhost: boolean = true): SafetyValidationResult {
   const trimmed = rawUrl.trim();
   if (!trimmed) {
     return {
@@ -24,7 +24,12 @@ export function validateBackendTargetUrl(rawUrl: string, allowLocalhost: boolean
 
   let urlObj: URL;
   try {
-    const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    const isExplicitHttp = /^https?:\/\//i.test(trimmed);
+    let withScheme = trimmed;
+    if (!isExplicitHttp) {
+      const isLikelyLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|::1|192\.168\.|10\.|172\.(1[6-9]|2\d|3[0-1]))/i.test(trimmed);
+      withScheme = isLikelyLocal ? `http://${trimmed}` : `https://${trimmed}`;
+    }
     urlObj = new URL(withScheme);
   } catch {
     return {
@@ -53,7 +58,7 @@ export function validateBackendTargetUrl(rawUrl: string, allowLocalhost: boolean
         isValid: false,
         isLocal: true,
         sanitizedUrl: urlObj.toString(),
-        blockedReason: 'Localhost and private-network targets require explicit authorization. Set "allowLocalhost" to true.',
+        blockedReason: 'Localhost and private-network targets require authorization. Enable "Allow Localhost / Dev Mode" in settings.',
         warnings: ['Local target detected (Private Network/Localhost).'],
       };
     } else {
