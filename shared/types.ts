@@ -84,6 +84,7 @@ export interface TestIntent {
   timeoutMs: number;
   maxRetries: number;
   customSuccessCriteria?: string;
+  savedSteps?: TestStep[];
 }
 
 export interface TestRun {
@@ -127,10 +128,34 @@ export interface ErrorClassification {
   source: 'ui' | 'system' | 'application' | 'none';
 }
 
+export interface ExtractedButton {
+  accessibleName: string;
+  role: string;
+  text: string;
+  selector: string;
+  cssSelector: string;
+  playwrightSelector: string;
+  isEnabled: boolean;
+  tagName: string;
+  type: string | null;
+  id: string | null;
+  name: string | null;
+  classes: string;
+  outerHtml: string;
+  isVisible: boolean;
+  frameUrl?: string | null;
+  ariaLabel?: string | null;
+  attributes?: Record<string, string>;
+}
+
 export interface InspectedElement {
   tagName: string;
   role: string | null;
   innerText: string;
+  accessibleName?: string;
+  selector?: string;
+  cssSelector?: string;
+  playwrightSelector?: string;
   ariaLabel: string | null;
   placeholder: string | null;
   id: string | null;
@@ -154,6 +179,7 @@ export interface DomInspectionResult {
   inspectedAt: string;
   durationMs: number;
   elements: InspectedElement[];
+  buttons: ExtractedButton[];
   summary: {
     totalElements: number;
     buttonsCount: number;

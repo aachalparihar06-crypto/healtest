@@ -6,9 +6,26 @@ import type {
   TestStep 
 } from '../../shared/types';
 import type { InspectedElement } from './domAnalyzer';
+import { isSimulationOrDebugControl } from './intentParser';
 
 // Common semantic synonyms in web applications
 const SYNONYM_MAP: Record<string, string[]> = {
+  checkout: [
+    'continue to purchase',
+    'proceed to checkout',
+    'continue to checkout',
+    'place order',
+    'buy now',
+    'pay now',
+    'complete purchase',
+    'proceed to pay',
+    'finish order',
+    'purchase'
+  ],
+  'continue to purchase': ['checkout', 'proceed to checkout', 'place order', 'buy now', 'pay now'],
+  'proceed to checkout': ['continue to purchase', 'checkout', 'place order', 'buy now', 'pay now'],
+  purchase: ['checkout', 'continue to purchase', 'buy now', 'place order'],
+  cart: ['view cart', 'shopping cart', 'bag', 'my cart', 'basket'],
   submit: ['send', 'post', 'save', 'apply', 'confirm', 'proceed', 'done'],
   send: ['submit', 'post', 'dispatch'],
   signin: ['login', 'log in', 'sign in', 'authenticate', 'enter'],
@@ -77,7 +94,7 @@ export function calculateStringSimilarity(a: string, b: string): number {
 /**
  * Checks if two words/phrases are recognized semantic synonyms.
  */
-function areSynonyms(a: string, b: string): boolean {
+export function areSynonyms(a: string, b: string): boolean {
   const normA = a.toLowerCase().replace(/[^a-z]/g, '');
   const normB = b.toLowerCase().replace(/[^a-z]/g, '');
   if (normA === normB) return true;
@@ -87,6 +104,26 @@ function areSynonyms(a: string, b: string): boolean {
 
   const synonymsB = SYNONYM_MAP[normB] || [];
   if (synonymsB.some((s) => s.replace(/[^a-z]/g, '') === normA)) return true;
+
+  for (const [key, list] of Object.entries(SYNONYM_MAP)) {
+    const normKey = key.replace(/[^a-z]/g, '');
+    const inList = (word: string) => normKey === word || list.some((item) => item.replace(/[^a-z]/g, '') === word);
+    if (inList(normA) && inList(normB)) {
+      return true;
+    }
+  }
+
+  // Token-level synonym comparison for compound phrases (e.g., "Submit Feedback" vs "Send")
+  const wordsA = a.toLowerCase().split(/[^a-z]+/).filter((w) => w.length > 2);
+  const wordsB = b.toLowerCase().split(/[^a-z]+/).filter((w) => w.length > 2);
+  for (const wA of wordsA) {
+    for (const wB of wordsB) {
+      const synA = SYNONYM_MAP[wA] || [];
+      if (synA.some((s) => s.replace(/[^a-z]/g, '') === wB)) return true;
+      const synB = SYNONYM_MAP[wB] || [];
+      if (synB.some((s) => s.replace(/[^a-z]/g, '') === wA)) return true;
+    }
+  }
 
   return false;
 }
@@ -115,6 +152,14 @@ export function evaluateSelfHealingCandidates(
 
   for (const el of inspectedElements) {
     if (!el.isVisible || !el.isEnabled) continue;
+
+    // Disqualify simulation/mock/debug controls unless original action explicitly targeted them
+    if (isSimulationOrDebugControl(el, originalTargetName)) {
+      continue;
+    }
+    if (expectedRole === 'button' && el.role === 'switch') {
+      continue;
+    }
 
     let score = 0;
     let strategy: HealingStrategy = 'semantic_attribute_heuristic';

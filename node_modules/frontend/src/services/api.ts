@@ -1,4 +1,4 @@
-import type { TestRun, TestIntent, DomInspectionResult } from '../types';
+import type { TestRun, TestIntent, DomInspectionResult, ExtractedButton } from '../types';
 import { classifyTestRun } from '../types';
 
 const DEFAULT_API_BASE = 'http://localhost:3001/api';
@@ -148,6 +148,36 @@ export const apiService = {
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
       throw new Error(errData.error || `Inspection failed with status ${res.status}`);
+    }
+
+    return await res.json();
+  },
+
+  /**
+   * Extract live interactive buttons using Playwright
+   */
+  async extractButtons(url: string, allowLocalhost: boolean = true, timeoutMs: number = 15000): Promise<{
+    targetUrl: string;
+    finalUrl: string;
+    pageTitle: string;
+    httpStatus: number | null;
+    durationMs: number;
+    buttons: ExtractedButton[];
+    totalButtons: number;
+    errors: string[];
+    screenshotUrl?: string;
+  }> {
+    const baseUrl = getApiBaseUrl();
+    const res = await fetch(`${baseUrl}/extract-buttons`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, allowLocalhost, timeoutMs }),
+      signal: AbortSignal.timeout(timeoutMs + 5000),
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `Button extraction failed with status ${res.status}`);
     }
 
     return await res.json();

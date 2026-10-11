@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Globe, Terminal, Play, Sparkles, CheckCircle2, AlertCircle, Bookmark, Layers } from 'lucide-react';
+import { Globe, Terminal, Play, Sparkles, CheckCircle2, AlertCircle, Layers } from 'lucide-react';
 import type { TestIntent, SafetyValidationResult } from '../types';
 import { validateTestInstruction } from '../utils/safetyValidator';
 
@@ -11,33 +11,6 @@ interface TargetConfigPanelProps {
   isRunning: boolean;
 }
 
-const PRESETS = [
-  {
-    title: '⚡ Live Self-Healing (Submit → Send)',
-    url: 'http://localhost:3001/fixture?mutated=true',
-    instruction: 'Navigate to fixture, enter "Stage 4 Self-Healing Test" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-    criteria: 'Feedback Submitted Successfully',
-  },
-  {
-    title: '✅ Baseline E2E Pass',
-    url: 'http://localhost:3001/fixture',
-    instruction: 'Navigate to fixture, enter "Shivansh Patel" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-    criteria: 'Feedback Submitted Successfully',
-  },
-  {
-    title: '❌ Strict Failure (No Fabrication)',
-    url: 'http://localhost:3001/fixture?broken=true',
-    instruction: 'Navigate to fixture, enter "Unrecoverable Target" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-    criteria: 'Feedback Submitted Successfully',
-  },
-  {
-    title: '🌐 Live Remote (example.com)',
-    url: 'https://example.com',
-    instruction: 'Navigate to example page, verify "documentation examples" is visible',
-    criteria: 'documentation examples',
-  },
-];
-
 export const TargetConfigPanel: React.FC<TargetConfigPanelProps> = ({
   intent,
   onChangeIntent,
@@ -47,14 +20,6 @@ export const TargetConfigPanel: React.FC<TargetConfigPanelProps> = ({
 }) => {
   const [showDecompositionPreview, setShowDecompositionPreview] = useState(false);
   const instructionSafety = validateTestInstruction(intent.naturalLanguageInstruction);
-
-  const applyPreset = (preset: typeof PRESETS[0]) => {
-    onChangeIntent({
-      targetUrl: preset.url,
-      naturalLanguageInstruction: preset.instruction,
-      customSuccessCriteria: preset.criteria,
-    });
-  };
 
   const decomposedActions = intent.naturalLanguageInstruction
     .split(/(?:,|\.|\band then\b|\bthen\b|\band\b)/i)
@@ -74,23 +39,6 @@ export const TargetConfigPanel: React.FC<TargetConfigPanelProps> = ({
           <p className="text-xs text-slate-400 mt-1">
             Specify any target website URL and describe the test workflow in natural language.
           </p>
-        </div>
-
-        {/* Preset Selector */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
-          <span className="text-xs text-slate-400 font-medium flex items-center gap-1 shrink-0">
-            <Bookmark className="h-3.5 w-3.5 text-blue-400" />
-            Presets:
-          </span>
-          {PRESETS.map((p, idx) => (
-            <button
-              key={idx}
-              onClick={() => applyPreset(p)}
-              className="text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition whitespace-nowrap"
-            >
-              {p.title}
-            </button>
-          ))}
         </div>
       </div>
 

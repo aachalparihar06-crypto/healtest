@@ -7,7 +7,6 @@ import {
   ShieldCheck, 
   AlertCircle, 
   CheckCircle2, 
-  Layers, 
   Wrench, 
   ArrowRight,
   Settings,
@@ -18,7 +17,8 @@ import {
   Columns,
   Eye,
   X,
-  Monitor
+  Monitor,
+  MousePointer
 } from 'lucide-react';
 import type { TestIntent, TestRun, SafetyValidationResult, DomInspectionResult } from '../types';
 import type { NavigationPage } from '../components/Navbar';
@@ -39,37 +39,6 @@ interface NewTestPageProps {
   onNavigate: (page: NavigationPage) => void;
   onSelectRun: (runId: string) => void;
 }
-
-const PRESETS = [
-  {
-    title: '⚡ Live Self-Healing (Submit → Send)',
-    url: 'http://localhost:3001/fixture?mutated=true',
-    instruction: 'Navigate to fixture, enter "HealTest User" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-    criteria: 'Feedback Submitted Successfully',
-    description: 'Button text was mutated from Submit to Send. Verifies autonomous healing.',
-  },
-  {
-    title: '✅ Baseline E2E Pass',
-    url: 'http://localhost:3001/fixture',
-    instruction: 'Navigate to fixture, enter "Shivansh Patel" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-    criteria: 'Feedback Submitted Successfully',
-    description: 'Direct accessible execution against the standard fixture.',
-  },
-  {
-    title: '❌ Strict Failure (No Fake Recovery)',
-    url: 'http://localhost:3001/fixture?broken=true',
-    instruction: 'Navigate to fixture, enter "Test Fail" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-    criteria: 'Feedback Submitted Successfully',
-    description: 'Button is absent. Confirms engine strictly fails without fake results.',
-  },
-  {
-    title: '🌐 Live Remote (example.com)',
-    url: 'https://example.com',
-    instruction: 'Navigate to example page, verify "documentation examples" is visible',
-    criteria: 'documentation examples',
-    description: 'Tests a real live external public website over HTTPS.',
-  },
-];
 
 export const NewTestPage: React.FC<NewTestPageProps> = ({
   intent,
@@ -118,15 +87,6 @@ export const NewTestPage: React.FC<NewTestPageProps> = ({
     }
   };
 
-  const applyPreset = (preset: typeof PRESETS[0]) => {
-    onClearRunError();
-    onChangeIntent({
-      targetUrl: preset.url,
-      naturalLanguageInstruction: preset.instruction,
-      customSuccessCriteria: preset.criteria,
-    });
-  };
-
   const decomposedActions = intent.naturalLanguageInstruction
     .split(/(?:,|\.|\band then\b|\bthen\b|\band\b)/i)
     .map((s) => s.trim())
@@ -138,7 +98,7 @@ export const NewTestPage: React.FC<NewTestPageProps> = ({
     <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-fadeIn">
       {/* Header */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 shadow-sm transition-colors">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
               <span className="p-1 rounded bg-teal-50 text-teal-600 dark:bg-teal-500/20 dark:text-teal-400">
@@ -149,7 +109,7 @@ export const NewTestPage: React.FC<NewTestPageProps> = ({
               </h1>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-              Enter any target URL and test instructions in natural language. HealTest runs real headless Playwright automation.
+              Enter any target website URL and your natural-language test instruction. HealTest inspects the real DOM and executes autonomous headless Playwright automation.
             </p>
           </div>
 
@@ -161,31 +121,6 @@ export const NewTestPage: React.FC<NewTestPageProps> = ({
             }`}>
               Local Dev Mode: {intent.allowLocalhost ? 'ENABLED' : 'BLOCKED'}
             </span>
-          </div>
-        </div>
-
-        {/* Quick Presets Bar */}
-        <div className="mt-5">
-          <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 flex items-center gap-1.5">
-            <Layers className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-            <span>Quick Start Presets:</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            {PRESETS.map((p, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => applyPreset(p)}
-                className="text-left p-3 rounded-lg bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 hover:border-teal-500/40 transition group cursor-pointer"
-              >
-                <div className="text-xs font-semibold text-slate-800 dark:text-slate-200 group-hover:text-teal-700 dark:group-hover:text-teal-300 transition">
-                  {p.title}
-                </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1 font-mono">
-                  {p.url}
-                </div>
-              </button>
-            ))}
           </div>
         </div>
       </div>
@@ -208,7 +143,7 @@ export const NewTestPage: React.FC<NewTestPageProps> = ({
             <div className="relative flex-1">
               <input
                 type="url"
-                placeholder="https://example.com or http://localhost:3001/fixture"
+                placeholder="https://your-website.com or http://localhost:3000"
                 value={intent.targetUrl}
                 onChange={(e) => {
                   onClearRunError();
@@ -250,17 +185,17 @@ export const NewTestPage: React.FC<NewTestPageProps> = ({
                     ? 'bg-teal-50 dark:bg-slate-800 hover:bg-teal-100 dark:hover:bg-slate-750 text-teal-800 dark:text-teal-300 border-teal-200 dark:border-teal-500/30 active:scale-95'
                     : 'bg-slate-50 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 cursor-not-allowed'
                 }`}
-                title="Inspect page with Playwright (extract accessible roles, buttons, inputs, labels)"
+                title="Extract real live buttons with Playwright (accessible name, role, selector, and state)"
               >
                 {isInspecting ? (
                   <>
                     <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                    <span>Inspecting...</span>
+                    <span>Extracting...</span>
                   </>
                 ) : (
                   <>
-                    <Search className="h-3.5 w-3.5" />
-                    <span>Inspect DOM</span>
+                    <MousePointer className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+                    <span>Extract Buttons</span>
                   </>
                 )}
               </button>
@@ -414,7 +349,7 @@ export const NewTestPage: React.FC<NewTestPageProps> = ({
 
           <textarea
             rows={3}
-            placeholder="e.g. Navigate to fixture, enter 'Hello' in Feedback Input, click Submit Feedback, verify Feedback Submitted Successfully is visible"
+            placeholder="e.g. Navigate to website, enter 'john@example.com' into 'Email', click 'Submit', verify 'Welcome' is visible"
             value={intent.naturalLanguageInstruction}
             onChange={(e) => {
               onClearRunError();

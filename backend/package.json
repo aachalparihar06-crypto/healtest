@@ -9,7 +9,10 @@
     "test:stage2": "npx tsx src/verify-stage2.ts",
     "test:stage3": "npx tsx src/verify-stage3.ts",
     "test:stage4": "npx tsx src/verify-stage4.ts",
-    "test:regression:assertions": "npx tsx test-assertion-regression.mjs"
+    "test:regression:assertions": "npx tsx test-assertion-regression.mjs",
+    "test:regression:checkout": "npx tsx test-checkout-intent-regression.mjs",
+    "test:demo:ab": "npx tsx test-version-a-b-regression.mjs",
+    "test:buttons": "npx tsx test-button-extractor.mjs"
   },
   "dependencies": {
     "cors": "^2.8.5",

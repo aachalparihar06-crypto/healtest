@@ -13,7 +13,6 @@ interface HealingInspectorPageProps {
   selectedRunId: string | null;
   onSelectRun: (id: string) => void;
   onNavigate: (page: NavigationPage) => void;
-  onQuickRunPreset: (preset: { url: string; instruction: string; criteria: string }) => void;
 }
 
 export const HealingInspectorPage: React.FC<HealingInspectorPageProps> = ({
@@ -21,7 +20,6 @@ export const HealingInspectorPage: React.FC<HealingInspectorPageProps> = ({
   selectedRunId,
   onSelectRun,
   onNavigate,
-  onQuickRunPreset,
 }) => {
   // Find all runs that had healing events
   const healedRuns = runs.filter((r) => r.healingRecords && r.healingRecords.length > 0);
@@ -100,25 +98,15 @@ export const HealingInspectorPage: React.FC<HealingInspectorPageProps> = ({
           <Wrench className="h-10 w-10 text-slate-300 dark:text-slate-600 mx-auto" />
           <h2 className="text-base font-bold text-slate-900 dark:text-white">No Test Runs Available</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-            Execute a test on the New Test page or click the button below to test self-healing against the mutated test fixture.
+            Execute a test on the New Test page by entering your target URL and instructions to inspect execution and self-healing diagnostics.
           </p>
           <div className="flex items-center justify-center gap-3 pt-2">
             <button
-              onClick={() => onQuickRunPreset({
-                url: 'http://localhost:3001/fixture?mutated=true',
-                instruction: 'Navigate to fixture, enter "Testing Mutation" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-                criteria: 'Feedback Submitted Successfully',
-              })}
-              className="px-5 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-xs transition flex items-center gap-2"
+              onClick={() => onNavigate('new-test')}
+              className="px-5 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-xs transition flex items-center gap-2 cursor-pointer"
             >
               <Play className="h-3.5 w-3.5 fill-current" />
-              <span>Launch Live Self-Healing Test</span>
-            </button>
-            <button
-              onClick={() => onNavigate('new-test')}
-              className="px-4 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold transition border border-slate-200 dark:border-slate-700"
-            >
-              Custom Test
+              <span>Create New Test</span>
             </button>
           </div>
         </div>
@@ -152,15 +140,11 @@ export const HealingInspectorPage: React.FC<HealingInspectorPageProps> = ({
 
           <div className="pt-2">
             <button
-              onClick={() => onQuickRunPreset({
-                url: 'http://localhost:3001/fixture?mutated=true',
-                instruction: 'Navigate to fixture, enter "HealTest Recovery" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-                criteria: 'Feedback Submitted Successfully',
-              })}
-              className="px-5 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-xs transition inline-flex items-center gap-2"
+              onClick={() => onNavigate('new-test')}
+              className="px-5 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-xs transition inline-flex items-center gap-2 cursor-pointer"
             >
               <Play className="h-3.5 w-3.5 fill-current" />
-              <span>Run Live Self-Healing Demo (Submit → Send)</span>
+              <span>Run Another Test</span>
             </button>
           </div>
         </div>

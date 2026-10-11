@@ -256,6 +256,158 @@ app.get('/fixture', (req, res) => {
 });
 
 /**
+ * Separate Target Demo Application - Version A ("Submit Feedback") and Version B ("Send")
+ */
+function renderDemoApp(version: 'A' | 'B'): string {
+  const isA = version === 'A';
+  const buttonHtml = isA
+    ? `<button id="submit-feedback-btn" role="button">Submit Feedback</button>`
+    : `<button id="send-btn" role="button">Send</button>`;
+  const buttonId = isA ? 'submit-feedback-btn' : 'send-btn';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Feedback Portal — Version ${version}</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: #0b0f19;
+      color: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 36px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      background: ${isA ? 'rgba(59, 130, 246, 0.2)' : 'rgba(16, 185, 129, 0.2)'};
+      color: ${isA ? '#60a5fa' : '#34d399'};
+      border: 1px solid ${isA ? 'rgba(59, 130, 246, 0.4)' : 'rgba(16, 185, 129, 0.4)'};
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 8px 0;
+      color: #f8fafc;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-top: 16px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #030712;
+      color: white;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus {
+      border-color: #6366f1;
+    }
+    button {
+      margin-top: 18px;
+      background: ${isA ? '#2563eb' : '#059669'};
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+    }
+    button:hover {
+      background: ${isA ? '#1d4ed8' : '#047857'};
+    }
+    #status-banner {
+      display: none;
+      margin-top: 24px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">TARGET APP: VERSION ${version}</span>
+    <h1 id="app-heading">Customer Feedback Portal</h1>
+    <p id="app-desc">Standalone feedback target app. Button: <strong>"${isA ? 'Submit Feedback' : 'Send'}"</strong>.</p>
+    
+    <div class="form-group">
+      <label for="feedback-input">Feedback Input</label>
+      <input type="text" id="feedback-input" placeholder="Type your feedback message" aria-label="Feedback Input">
+      ${buttonHtml}
+    </div>
+
+    <div id="status-banner" role="status">
+      Feedback Submitted Successfully
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('${buttonId}').addEventListener('click', function() {
+      var val = document.getElementById('feedback-input').value.trim();
+      var banner = document.getElementById('status-banner');
+      banner.style.display = 'block';
+      banner.textContent = 'Feedback Submitted Successfully: ' + (val || 'Generic Demo');
+    });
+  </script>
+</body>
+</html>`;
+}
+
+app.get('/demo/version-a', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  res.send(renderDemoApp('A'));
+});
+
+app.get('/demo/version-b', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  res.send(renderDemoApp('B'));
+});
+
+/**
  * List all test runs
  */
 app.get('/api/runs', (req, res) => {
@@ -387,6 +539,49 @@ app.post('/api/inspect', async (req, res) => {
     console.error('[HealTest API] Inspection failed:', err);
     res.status(500).json({
       error: `Live inspection failed: ${err.message}`,
+    });
+  }
+});
+
+/**
+ * Dedicated Live Button Extractor endpoint
+ * Inspects the live DOM of any target URL using Playwright
+ * and returns real interactive buttons with accessible name, role, text, selector, and enabled/disabled state.
+ */
+app.post('/api/extract-buttons', async (req, res) => {
+  const { url, allowLocalhost = true, timeoutMs = 12000 } = req.body;
+  if (!url || typeof url !== 'string') {
+    return res.status(400).json({ error: 'Target URL is required.' });
+  }
+
+  const safety = validateBackendTargetUrl(url, Boolean(allowLocalhost));
+  if (!safety.isValid) {
+    return res.status(403).json({
+      error: safety.blockedReason || 'Target URL blocked by safety policy.',
+      safety,
+    });
+  }
+
+  const targetUrl = safety.sanitizedUrl || url;
+
+  try {
+    console.log(`[HealTest API] Live button extraction requested for: ${targetUrl}`);
+    const inspectionResult = await executor.inspectPage(targetUrl, Number(timeoutMs) || 12000);
+    res.json({
+      targetUrl,
+      finalUrl: inspectionResult.finalUrl,
+      pageTitle: inspectionResult.pageTitle,
+      httpStatus: inspectionResult.httpStatus,
+      durationMs: inspectionResult.durationMs,
+      buttons: inspectionResult.buttons,
+      totalButtons: inspectionResult.buttons.length,
+      errors: inspectionResult.errors,
+      screenshotUrl: inspectionResult.screenshotUrl,
+    });
+  } catch (err: any) {
+    console.error('[HealTest API] Button extraction failed:', err);
+    res.status(500).json({
+      error: `Live button extraction failed: ${err.message}`,
     });
   }
 });

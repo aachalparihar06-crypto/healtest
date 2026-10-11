@@ -159,7 +159,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             <div>
               <div className="font-semibold text-slate-900 dark:text-slate-200">Local Dev Mode (Localhost / RFC-1918 Access)</div>
               <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Allows testing targets hosted on localhost (e.g. port 3001 fixture) and private LAN addresses.
+                Allows testing targets hosted on localhost (e.g. port 3000, 4000, 8080) and private LAN addresses.
               </div>
             </div>
             <button

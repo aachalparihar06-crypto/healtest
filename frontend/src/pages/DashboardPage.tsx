@@ -8,8 +8,7 @@ import {
   Clock, 
   ArrowRight, 
   Server, 
-  Sparkles,
-  Layers
+  Sparkles
 } from 'lucide-react';
 import type { TestRun } from '../types';
 import type { BackendHealthResponse } from '../services/api';
@@ -20,7 +19,6 @@ interface DashboardPageProps {
   backendHealth: BackendHealthResponse;
   onNavigate: (page: NavigationPage) => void;
   onSelectRun: (runId: string) => void;
-  onQuickRunPreset: (preset: { url: string; instruction: string; criteria: string }) => void;
 }
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({
@@ -28,7 +26,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   backendHealth,
   onNavigate,
   onSelectRun,
-  onQuickRunPreset,
 }) => {
   // Real metrics calculated directly from actual backend runs
   const totalRuns = runs.length;
@@ -166,7 +163,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         </div>
       </div>
 
-      {/* System Health & Presets Grid */}
+      {/* System Health & Architecture Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 shadow-sm transition-colors">
           <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
@@ -211,63 +208,38 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </div>
         </div>
 
-        {/* Quick Presets Column */}
+        {/* Autonomous Test Runner Action Card */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6 shadow-sm flex flex-col justify-between transition-colors">
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
-              <Layers className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-              Verified Scenarios
+              <Play className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+              Autonomous Test Runner
             </h2>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
-              Launch pre-configured verification tests against the local test fixture:
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+              Run E2E testing against any web application. Enter your target URL and natural-language instructions to generate and execute real Playwright tests.
             </p>
 
-            <div className="space-y-2.5 mt-4">
-              <button
-                onClick={() => onQuickRunPreset({
-                  url: 'http://localhost:3001/fixture?mutated=true',
-                  instruction: 'Navigate to fixture, enter "Testing Mutation" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-                  criteria: 'Feedback Submitted Successfully',
-                })}
-                className="w-full text-left p-2.5 rounded-lg bg-amber-50/60 dark:bg-slate-950 hover:bg-amber-100/60 dark:hover:bg-slate-800/80 border border-amber-200 dark:border-amber-500/30 transition group cursor-pointer"
-              >
-                <div className="flex items-center justify-between text-xs font-semibold text-amber-900 dark:text-amber-300">
-                  <span>⚡ Live Mutation (Submit → Send)</span>
-                  <ArrowRight className="h-3 w-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition" />
-                </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Triggers DOM healing & recovery</div>
-              </button>
-
-              <button
-                onClick={() => onQuickRunPreset({
-                  url: 'http://localhost:3001/fixture',
-                  instruction: 'Navigate to fixture, enter "Baseline Demo" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-                  criteria: 'Feedback Submitted Successfully',
-                })}
-                className="w-full text-left p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 transition group cursor-pointer"
-              >
-                <div className="flex items-center justify-between text-xs font-semibold text-emerald-800 dark:text-emerald-300">
-                  <span>✅ Baseline Fixture Pass</span>
-                  <ArrowRight className="h-3 w-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition" />
-                </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Clean end-to-end execution</div>
-              </button>
-
-              <button
-                onClick={() => onQuickRunPreset({
-                  url: 'http://localhost:3001/fixture?broken=true',
-                  instruction: 'Navigate to fixture, enter "Fail Test" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
-                  criteria: 'Feedback Submitted Successfully',
-                })}
-                className="w-full text-left p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 transition group cursor-pointer"
-              >
-                <div className="flex items-center justify-between text-xs font-semibold text-rose-800 dark:text-rose-300">
-                  <span>❌ Strict Failure (No Fake Pass)</span>
-                  <ArrowRight className="h-3 w-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition" />
-                </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Missing target strictly fails</div>
-              </button>
+            <div className="space-y-2 mt-4">
+              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
+                <div className="font-semibold text-slate-800 dark:text-slate-200 mb-0.5">Target Website Inspection</div>
+                <div className="text-slate-500 dark:text-slate-400">Playwright extracts real DOM interactive elements & buttons</div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
+                <div className="font-semibold text-slate-800 dark:text-slate-200 mb-0.5">Dynamic Intent Execution</div>
+                <div className="text-slate-500 dark:text-slate-400">Tests decomposed and executed strictly against live page evidence</div>
+              </div>
             </div>
+          </div>
+
+          <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
+            <button
+              onClick={() => onNavigate('new-test')}
+              className="w-full py-2.5 px-4 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-sm transition flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Play className="h-3.5 w-3.5 fill-current" />
+              <span>Create New Test</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
           </div>
         </div>
       </div>
@@ -300,7 +272,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <Activity className="h-8 w-8 text-slate-400 dark:text-slate-600 mx-auto mb-2" />
             <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-300">No Tests Executed Yet</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
-              Execute your first natural-language test or run one of the verified fixture presets above.
+              Execute your first natural-language test by entering your target website URL and test instruction.
             </p>
             <button
               onClick={() => onNavigate('new-test')}

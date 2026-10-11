@@ -73,8 +73,8 @@ export const App: React.FC = () => {
 
   // Test Intent State for New Test Page
   const [intent, setIntent] = useState<TestIntent>({
-    targetUrl: 'http://localhost:3001/fixture',
-    naturalLanguageInstruction: 'Navigate to fixture, enter "Shivansh Patel" into "Feedback Input", click "Submit Feedback", verify "Feedback Submitted Successfully" is visible',
+    targetUrl: '',
+    naturalLanguageInstruction: '',
     allowLocalhost: true,
     timeoutMs: 15000,
     maxRetries: 2,
@@ -153,18 +153,6 @@ export const App: React.FC = () => {
     }
   };
 
-  // Quick preset runner from Dashboard
-  const handleQuickRunPreset = async (preset: { url: string; instruction: string; criteria: string }) => {
-    const newIntent: TestIntent = {
-      ...intent,
-      targetUrl: preset.url,
-      naturalLanguageInstruction: preset.instruction,
-      customSuccessCriteria: preset.criteria,
-    };
-    setIntent(newIntent);
-    handleNavigate('new-test');
-  };
-
   // Clear real history
   const handleClearHistory = async () => {
     await apiService.clearHistory();
@@ -198,7 +186,6 @@ export const App: React.FC = () => {
             backendHealth={backendHealth}
             onNavigate={handleNavigate}
             onSelectRun={handleSelectRun}
-            onQuickRunPreset={handleQuickRunPreset}
           />
         )}
 
@@ -233,7 +220,6 @@ export const App: React.FC = () => {
             selectedRunId={selectedRunId}
             onSelectRun={handleSelectRun}
             onNavigate={handleNavigate}
-            onQuickRunPreset={handleQuickRunPreset}
           />
         )}
 

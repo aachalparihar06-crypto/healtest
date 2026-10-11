@@ -10,7 +10,7 @@ export function stripDescriptorSuffix(text: string): { cleanName: string; inferr
   let trimmed = text.trim();
 
   // If text is purely the descriptor itself, retain it to avoid an empty string
-  if (/^(?:button|btn|link|input|field|textbox|checkbox|dropdown|select|icon|tab)$/i.test(trimmed)) {
+  if (/^(?:button|btn|link|input|field|textbox|checkbox|dropdown|select|icon|tab|page|screen|view|modal|dialog|form)$/i.test(trimmed)) {
     return { cleanName: trimmed };
   }
 
@@ -54,6 +54,24 @@ export function stripDescriptorSuffix(text: string): { cleanName: string; inferr
       inferredRole: 'tab',
     };
   }
+  if (/\s+(?:page|screen|view|window)$/i.test(trimmed)) {
+    return {
+      cleanName: trimmed.replace(/\s+(?:page|screen|view|window)$/i, '').trim(),
+      inferredRole: 'page',
+    };
+  }
+  if (/\s+(?:modal|dialog|popup)$/i.test(trimmed)) {
+    return {
+      cleanName: trimmed.replace(/\s+(?:modal|dialog|popup)$/i, '').trim(),
+      inferredRole: 'dialog',
+    };
+  }
+  if (/\s+(?:form)$/i.test(trimmed)) {
+    return {
+      cleanName: trimmed.replace(/\s+(?:form)$/i, '').trim(),
+      inferredRole: 'form',
+    };
+  }
 
   return { cleanName: trimmed };
 }
@@ -94,7 +112,8 @@ export function decomposeIntentIntoSteps(intent: TestIntent): TestStep[] {
   let order = 2;
   let lastTarget: string | undefined = undefined;
 
-  for (const clause of clauses) {
+  for (let cIdx = 0; cIdx < clauses.length; cIdx++) {
+    const clause = clauses[cIdx];
     const lower = clause.toLowerCase();
 
     // Skip redundant navigation mentions or handle secondary navigations
@@ -137,7 +156,55 @@ export function decomposeIntentIntoSteps(intent: TestIntent): TestStep[] {
       }
     }
 
-    // 2. Click / Press
+    // 2. Locate / Find element (check for compound "locate X, click it")
+    if (/^(?:locate|find)\b/i.test(clause)) {
+      const strippedLocate = clause.replace(/^(?:locate|find)\s+(?:the\s+)?/gi, '').trim();
+      const quoted = extractQuoted(strippedLocate) || extractQuoted(clause);
+      const rawTarget = quoted || strippedLocate;
+      const { cleanName, inferredRole } = stripDescriptorSuffix(rawTarget);
+
+      // Check if subsequent clause is a pronoun click action on this element (e.g. "click it", "click")
+      const nextClause = cIdx + 1 < clauses.length ? clauses[cIdx + 1].trim().toLowerCase() : '';
+      if (/^(?:click|press|tap)(?:\s+(?:it|them|this|that|the\s+button|the\s+element))?$/i.test(nextClause)) {
+        // Compound intent: "locate X, click it" -> Click "X"
+        cIdx++; // consume the pronoun click clause
+        steps.push({
+          id: `${runPrefix}-${order}`,
+          order: order++,
+          type: 'click',
+          description: `Click "${cleanName}"`,
+          selector: {
+            role: inferredRole || 'button',
+            name: cleanName,
+            text: cleanName,
+          },
+          status: 'pending',
+          durationMs: 0,
+        });
+        lastTarget = cleanName;
+        continue;
+      }
+
+      // Standalone locate
+      steps.push({
+        id: `${runPrefix}-${order}`,
+        order: order++,
+        type: 'assert_visible',
+        description: inferredRole === 'page' ? `Verify that ${cleanName} page is loaded and displayed` : `Verify presence of "${cleanName}"`,
+        selector: {
+          role: inferredRole,
+          name: cleanName,
+          text: cleanName,
+        },
+        value: cleanName,
+        status: 'pending',
+        durationMs: 0,
+      });
+      lastTarget = cleanName;
+      continue;
+    }
+
+    // 3. Click / Press
     if (/^(?:click|press|select|tap)\b/i.test(clause) || lower.includes('click on') || lower.includes('click the')) {
       const parsedClick = parseClickClause(clause, lastTarget);
       if (parsedClick) {
@@ -155,7 +222,7 @@ export function decomposeIntentIntoSteps(intent: TestIntent): TestStep[] {
       }
     }
 
-    // 3. Assert / Verify / Check
+    // 4. Assert / Verify / Check
     if (/^(?:verify|assert|check|confirm|ensure|see)\b/i.test(clause) || 
         lower.includes('is visible') || lower.includes('is enabled') || lower.includes('is disabled') || lower.includes('appears')) {
       const parsedAssert = parseAssertClause(clause, lastTarget);
@@ -164,6 +231,8 @@ export function decomposeIntentIntoSteps(intent: TestIntent): TestStep[] {
           ? `Verify that "${parsedAssert.targetName}" is enabled`
           : parsedAssert.type === 'assert_disabled'
           ? `Verify that "${parsedAssert.targetName}" is disabled`
+          : parsedAssert.selector.role === 'page'
+          ? `Verify that ${parsedAssert.targetName} page is loaded and displayed`
           : `Verify that "${parsedAssert.expectedText || parsedAssert.targetName}" is visible`;
 
         steps.push({
@@ -190,12 +259,16 @@ export function decomposeIntentIntoSteps(intent: TestIntent): TestStep[] {
     if (rawTarget && rawTarget.length > 2 && !isPronoun(rawTarget) && !/^(?:then|and|next|finally|enabled|disabled|visible|true)$/i.test(rawTarget)) {
       const { cleanName, inferredRole } = stripDescriptorSuffix(rawTarget);
       if (cleanName && !isPronoun(cleanName)) {
+        const desc = inferredRole === 'page'
+          ? `Verify that ${cleanName} page is loaded and displayed`
+          : `Verify presence of "${cleanName}"`;
         steps.push({
           id: `${runPrefix}-${order}`,
           order: order++,
           type: 'assert_visible',
-          description: `Verify presence of "${cleanName}"`,
+          description: desc,
           selector: { role: inferredRole, text: cleanName, name: cleanName },
+          value: cleanName,
           status: 'pending',
           durationMs: 0,
         });
@@ -516,11 +589,11 @@ function parseAssertClause(
     return null;
   }
 
-  const { cleanName } = stripDescriptorSuffix(rawText);
+  const { cleanName, inferredRole } = stripDescriptorSuffix(rawText);
   return {
     targetName: cleanName,
     type: 'assert_visible',
-    selector: { text: cleanName },
+    selector: { role: inferredRole, text: cleanName, name: cleanName },
     expectedText: cleanName,
   };
 }
@@ -534,7 +607,39 @@ function cleanTargetText(str: string): string {
   return str.replace(/^(?:the|a|an|that|then)\s+/gi, '').trim();
 }
 
-function isElementCompatibleWithAction(el: InspectedElement, actionType: ActionType): boolean {
+/**
+ * Detects whether an element is a demo simulation/debug toggle or mock control
+ * (e.g., "Simulate Checkout Failure", "#toggle-failure", "Show Debug Information").
+ * Disqualifies such controls unless the user's explicit instruction requested simulation/debug.
+ */
+export function isSimulationOrDebugControl(el: InspectedElement, targetInstruction?: string): boolean {
+  if (targetInstruction && /(?:simulate|simulation|failure|mock|debug|toggle-failure)/i.test(targetInstruction)) {
+    return false; // User explicitly requested simulation/debug
+  }
+  const id = (el.id || '').toLowerCase();
+  const text = (el.innerText || '').toLowerCase();
+  const label = (el.label || el.ariaLabel || '').toLowerCase();
+  const name = (el.name || '').toLowerCase();
+
+  if (id.includes('toggle-failure') || id.includes('simulate') || id.includes('debug') || id.includes('mock') || id.includes('test-mode')) {
+    return true;
+  }
+  if (text.includes('simulate') || text.includes('checkout failure') || text.includes('debug information') || text.includes('test mode') || text.includes('reset demo')) {
+    return true;
+  }
+  if (label.includes('simulate') || label.includes('debug') || label.includes('mock')) {
+    return true;
+  }
+  if (name.includes('simulate') || name.includes('debug')) {
+    return true;
+  }
+  return false;
+}
+
+function isElementCompatibleWithAction(el: InspectedElement, actionType: ActionType, targetName?: string): boolean {
+  if (isSimulationOrDebugControl(el, targetName)) {
+    return false;
+  }
   if (actionType === 'fill') {
     return (
       ['input', 'textarea', 'select'].includes(el.tagName) ||
@@ -542,6 +647,9 @@ function isElementCompatibleWithAction(el: InspectedElement, actionType: ActionT
     );
   }
   if (actionType === 'click') {
+    if (el.role === 'switch' && !/(?:switch|toggle)/i.test(targetName || '')) {
+      return false;
+    }
     const tag = el.tagName;
     const r = el.role || '';
     if (['div', 'section', 'article', 'main', 'header', 'footer', 'body', 'ul', 'ol', 'form'].includes(tag) &&
@@ -559,6 +667,12 @@ function isElementCompatibleWithAction(el: InspectedElement, actionType: ActionT
 }
 
 function calculateMatchScore(el: InspectedElement, normTarget: string, expectedRole?: string): number {
+  if (isSimulationOrDebugControl(el, normTarget)) {
+    return 0;
+  }
+  if (expectedRole === 'button' && el.role === 'switch') {
+    return 0;
+  }
   const id = (el.id || '').toLowerCase().trim();
   const name = (el.name || '').toLowerCase().trim();
   const placeholder = (el.placeholder || '').toLowerCase().trim();
@@ -616,7 +730,7 @@ export function groundStepsWithLiveDom(steps: TestStep[], liveElements: Inspecte
   let lastInteractedElement: InspectedElement | null = null;
 
   for (const step of steps) {
-    if (step.type === 'navigate') continue;
+    if (step.type === 'navigate' || step.selector.role === 'page') continue;
 
     const targetName = step.selector.name || step.selector.text || '';
     const isTargetPronoun = isPronoun(targetName);
@@ -627,7 +741,7 @@ export function groundStepsWithLiveDom(steps: TestStep[], liveElements: Inspecte
       const normTarget = targetName.toLowerCase().trim();
 
       // Find compatible candidate elements for this step type
-      const compatibleCandidates = liveElements.filter(el => isElementCompatibleWithAction(el, step.type));
+      const compatibleCandidates = liveElements.filter(el => isElementCompatibleWithAction(el, step.type, normTarget));
       const pool = compatibleCandidates.length > 0 ? compatibleCandidates : liveElements;
 
       let bestScore = 0;

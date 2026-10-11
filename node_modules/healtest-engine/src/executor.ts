@@ -12,9 +12,9 @@ import type {
   InspectedElement
 } from '../../shared/types';
 import { classifyTestRun } from '../../shared/types';
-import { decomposeIntentIntoSteps, groundStepsWithLiveDom } from './intentParser';
-import { inspectInteractiveDom } from './domAnalyzer';
-import { evaluateSelfHealingCandidates } from './healingStrategist';
+import { decomposeIntentIntoSteps, groundStepsWithLiveDom, isSimulationOrDebugControl } from './intentParser';
+import { inspectInteractiveDom, filterButtons } from './domAnalyzer';
+import { evaluateSelfHealingCandidates, areSynonyms } from './healingStrategist';
 
 export interface ExecutorOptions {
   headless?: boolean;
@@ -45,26 +45,25 @@ export class PlaywrightExecutor {
     if (selector.role && selector.name) {
       const escaped = selector.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       if (selector.role === 'button') {
-        let loc = page.getByRole('button', { name: selector.name })
-          .or(page.getByRole('button', { name: new RegExp(escaped, 'i') }))
-          .or(page.getByRole('link', { name: selector.name }))
-          .or(page.getByRole('link', { name: new RegExp(escaped, 'i') }))
-          .or(page.locator(`input[type="submit"][value*="${selector.name}" i]`))
-          .or(page.locator(`input[type="button"][value*="${selector.name}" i]`))
-          .or(page.locator(`button[id*="${selector.name}" i]`))
-          .or(page.locator(`button[name*="${selector.name}" i]`))
-          .or(page.getByText(selector.name, { exact: false }));
+        // Enforce exact accessible name matching to prevent accidental substring collision (e.g. "Checkout" matching "Simulate Checkout Failure")
+        let loc = page.getByRole('button', { name: selector.name, exact: true })
+          .or(page.getByRole('button', { name: new RegExp(`^${escaped}$`, 'i') }))
+          .or(page.getByRole('link', { name: selector.name, exact: true }))
+          .or(page.getByRole('link', { name: new RegExp(`^${escaped}$`, 'i') }))
+          .or(page.locator(`input[type="submit"][value="${selector.name}" i]`))
+          .or(page.locator(`input[type="button"][value="${selector.name}" i]`))
+          .or(page.locator(`button[id="${selector.name}" i]`))
+          .or(page.locator(`button[name="${selector.name}" i]`));
         if (selector.testId) loc = loc.or(page.getByTestId(selector.testId));
         if (selector.cssFallback) loc = loc.or(page.locator(selector.cssFallback));
         return loc;
       }
       if (selector.role === 'link') {
-        let loc = page.getByRole('link', { name: selector.name })
-          .or(page.getByRole('link', { name: new RegExp(escaped, 'i') }))
-          .or(page.getByRole('button', { name: selector.name }))
-          .or(page.getByRole('button', { name: new RegExp(escaped, 'i') }))
-          .or(page.locator(`a:has-text("${selector.name}")`))
-          .or(page.getByText(selector.name, { exact: false }));
+        let loc = page.getByRole('link', { name: selector.name, exact: true })
+          .or(page.getByRole('link', { name: new RegExp(`^${escaped}$`, 'i') }))
+          .or(page.getByRole('button', { name: selector.name, exact: true }))
+          .or(page.getByRole('button', { name: new RegExp(`^${escaped}$`, 'i') }))
+          .or(page.locator(`a:has-text("${selector.name}")`));
         if (selector.testId) loc = loc.or(page.getByTestId(selector.testId));
         if (selector.cssFallback) loc = loc.or(page.locator(selector.cssFallback));
         return loc;
@@ -77,6 +76,14 @@ export class PlaywrightExecutor {
           .or(page.locator(`input[name*="${selector.name}" i]`))
           .or(page.locator(`input[id*="${selector.name}" i]`));
         if (selector.placeholder) loc = loc.or(page.getByPlaceholder(selector.placeholder));
+        if (selector.testId) loc = loc.or(page.getByTestId(selector.testId));
+        if (selector.cssFallback) loc = loc.or(page.locator(selector.cssFallback));
+        return loc;
+      }
+      if (selector.role === 'page') {
+        let loc = page.locator(`[data-testid*="${selector.name}" i], form[id*="${selector.name}" i], #${selector.name}-form, [id*="${selector.name}" i], main, [role="main"]`)
+          .or(page.getByRole('heading', { name: new RegExp(escaped, 'i') }))
+          .or(page.getByText(selector.name, { exact: false }));
         if (selector.testId) loc = loc.or(page.getByTestId(selector.testId));
         if (selector.cssFallback) loc = loc.or(page.locator(selector.cssFallback));
         return loc;
@@ -159,8 +166,24 @@ export class PlaywrightExecutor {
     addLog('info', `Initializing Playwright execution engine for target: ${intent.targetUrl}`);
     addLog('info', `Intent instruction: "${intent.naturalLanguageInstruction}"`);
 
-    const steps = decomposeIntentIntoSteps(intent);
-    addLog('info', `Decomposed intent into ${steps.length} atomic actions using accessible semantics.`);
+    const steps: TestStep[] = (intent.savedSteps && intent.savedSteps.length > 0)
+      ? JSON.parse(JSON.stringify(intent.savedSteps)).map((s: TestStep, idx: number) => {
+          if (idx === 0 && s.type === 'navigate') {
+            s.value = intent.targetUrl;
+            s.description = `Navigate to target URL (${intent.targetUrl})`;
+          }
+          s.status = 'pending';
+          s.error = undefined;
+          s.durationMs = 0;
+          return s;
+        })
+      : decomposeIntentIntoSteps(intent);
+
+    if (intent.savedSteps && intent.savedSteps.length > 0) {
+      addLog('info', `Replaying ${steps.length} saved test actions with original locators on target.`);
+    } else {
+      addLog('info', `Decomposed intent into ${steps.length} atomic actions using accessible semantics.`);
+    }
 
     let browser: Browser | null = null;
     let context: BrowserContext | null = null;
@@ -252,9 +275,11 @@ export class PlaywrightExecutor {
               console.log(`[Playwright Engine] Frames detected: ${frames.length}`);
               console.log(`[Playwright Engine] Visible buttons (${visibleButtons.length}): ${visibleButtons.map(b => `"${b.innerText || b.ariaLabel || b.name || b.id || b.tagName}"`).join(', ') || 'None found'}`);
 
-              // Inspect live DOM to ground subsequent intent steps with actual element names and roles
-              groundStepsWithLiveDom(steps.slice(i + 1), liveElements);
-              addLog('info', `Grounded subsequent test actions against live DOM elements.`, step.id);
+              // Ground subsequent intent steps against live DOM elements (only for fresh intents without saved locators)
+              if (!intent.savedSteps || intent.savedSteps.length === 0) {
+                groundStepsWithLiveDom(steps.slice(i + 1), liveElements);
+                addLog('info', `Grounded subsequent test actions against live DOM elements.`, step.id);
+              }
               break;
             }
 
@@ -331,18 +356,65 @@ export class PlaywrightExecutor {
               const locator = this.resolveAccessibleLocator(page, step.selector);
               let isVisible = false;
 
-              try {
-                await locator.first().waitFor({ state: 'visible', timeout: 5000 });
-                isVisible = await locator.first().isVisible();
-              } catch {
-                // If this is a synthesized goal outcome, inspect whether URL transition or page title verified the goal
-                if (step.description.includes('goal outcome') && step.value) {
-                  const valLower = step.value.toLowerCase().trim();
-                  const currentUrl = page.url().toLowerCase();
-                  const currentTitle = (await page.title().catch(() => '')).toLowerCase();
-                  if (currentUrl.includes(valLower) || currentTitle.includes(valLower)) {
-                    isVisible = true;
-                    addLog('info', `Verified goal outcome via live page transition (URL/Title contains "${step.value}").`, step.id);
+              // Check if the step is asserting a page / screen outcome (e.g. checkout page, cart page, login page)
+              const isPageAssertion = step.selector.role === 'page' || 
+                step.description.toLowerCase().includes('page') ||
+                step.description.toLowerCase().includes('screen') ||
+                step.description.toLowerCase().includes('view');
+
+              if (isPageAssertion) {
+                const targetConcept = (step.selector.name || step.value || '').toLowerCase().trim();
+                const currentUrl = page.url().toLowerCase();
+                const currentTitle = (await page.title().catch(() => '')).toLowerCase();
+
+                // 1. Verify via live URL transition
+                if (targetConcept && (currentUrl.includes(targetConcept) || currentTitle.includes(targetConcept))) {
+                  isVisible = true;
+                  addLog('info', `Verified page outcome via live URL/Title transition (${currentUrl}).`, step.id);
+                }
+
+                // 2. Verify via domain-specific page content (e.g. checkout form, headings, reviews)
+                if (!isVisible) {
+                  if (targetConcept.includes('checkout') || targetConcept.includes('purchase')) {
+                    const checkoutForm = await page.locator('#checkout-form, form[id*="checkout" i], [data-testid*="checkout" i]').count();
+                    const checkoutHeadings = await page.locator('h1, h2, h3').allInnerTexts().catch(() => []);
+                    const hasCheckoutHeading = checkoutHeadings.some(h => 
+                      /shipping|delivery|checkout|order|payment|billing|review items/i.test(h)
+                    );
+                    if (checkoutForm > 0 || hasCheckoutHeading) {
+                      isVisible = true;
+                      addLog('info', `Verified checkout page via live DOM content (form/heading: ${checkoutHeadings.slice(0, 2).join(' / ')}).`, step.id);
+                    }
+                  } else if (targetConcept.includes('cart')) {
+                    const cartContent = await page.locator('#cart-drawer, [aria-label*="cart" i], h1:has-text("Cart"), h2:has-text("Cart")').count();
+                    if (cartContent > 0) {
+                      isVisible = true;
+                      addLog('info', `Verified cart page via live DOM content.`, step.id);
+                    }
+                  } else if (targetConcept) {
+                    const headingCount = await page.getByRole('heading', { name: new RegExp(targetConcept, 'i') }).count().catch(() => 0);
+                    if (headingCount > 0) {
+                      isVisible = true;
+                      addLog('info', `Verified page outcome via heading matching "${targetConcept}".`, step.id);
+                    }
+                  }
+                }
+              }
+
+              if (!isVisible) {
+                try {
+                  await locator.first().waitFor({ state: 'visible', timeout: 5000 });
+                  isVisible = await locator.first().isVisible();
+                } catch {
+                  // If this is a synthesized goal outcome, inspect whether URL transition or page title verified the goal
+                  if (step.description.includes('goal outcome') && step.value) {
+                    const valLower = step.value.toLowerCase().trim();
+                    const currentUrl = page.url().toLowerCase();
+                    const currentTitle = (await page.title().catch(() => '')).toLowerCase();
+                    if (currentUrl.includes(valLower) || currentTitle.includes(valLower)) {
+                      isVisible = true;
+                      addLog('info', `Verified goal outcome via live page transition (URL/Title contains "${step.value}").`, step.id);
+                    }
                   }
                 }
               }
@@ -423,7 +495,29 @@ export class PlaywrightExecutor {
 
           if (!isAssertion) {
             try {
-              const inspectedElements = await inspectInteractiveDom(page);
+              let inspectedElements = await inspectInteractiveDom(page);
+              const targetNameLower = (step.selector.name || step.selector.text || '').toLowerCase().trim();
+
+              // If target is checkout or purchase related and the cart drawer is closed, open cart drawer to discover checkout action
+              if (targetNameLower.includes('checkout') || targetNameLower.includes('purchase')) {
+                const hasDirectCheckout = inspectedElements.some(el => 
+                  !isSimulationOrDebugControl(el) &&
+                  el.role !== 'switch' &&
+                  areSynonyms(targetNameLower, el.innerText || el.label || el.ariaLabel || '') &&
+                  el.isVisible
+                );
+                if (!hasDirectCheckout) {
+                  const cartTrigger = page.locator('#cart-btn, button[aria-label*="cart" i], [data-testid*="cart" i], button:has-text("Cart")').first();
+                  const isCartVisible = await cartTrigger.isVisible().catch(() => false);
+                  if (isCartVisible) {
+                    addLog('heal', `[SELF-HEALING] Checkout action requested but cart drawer is closed. Opening cart drawer to discover checkout action...`, step.id);
+                    await cartTrigger.click().catch(() => {});
+                    await page.waitForTimeout(600);
+                    inspectedElements = await inspectInteractiveDom(page);
+                  }
+                }
+              }
+
               const healingEval = evaluateSelfHealingCandidates(
                 step,
                 i,
@@ -664,8 +758,8 @@ export class PlaywrightExecutor {
     }
 
     const durationMs = Date.now() - startTime;
-    const buttonsCount = elements.filter(e => (e.role === 'button' || e.tagName === 'button' || (e.tagName === 'input' && (e.type === 'submit' || e.type === 'button'))) && e.isVisible).length;
-    const inputsCount = elements.filter(e => (e.role === 'textbox' || e.role === 'combobox' || e.tagName === 'select' || e.tagName === 'textarea' || (e.tagName === 'input' && e.type !== 'submit' && e.type !== 'button' && e.type !== 'reset')) && e.isVisible).length;
+    const buttons = filterButtons(elements);
+    const inputsCount = elements.filter(e => (e.role === 'textbox' || e.role === 'combobox' || e.tagName === 'select' || e.tagName === 'textarea' || (e.tagName === 'input' && e.type !== 'submit' && e.type !== 'button' && e.type !== 'reset' && e.type !== 'image')) && e.isVisible).length;
     const linksCount = elements.filter(e => (e.role === 'link' || e.tagName === 'a') && e.isVisible).length;
     const textElementsCount = elements.filter(e => (e.role === 'heading' || e.role === 'status' || /^h[1-6]$/.test(e.tagName)) && e.isVisible).length;
 
@@ -677,9 +771,10 @@ export class PlaywrightExecutor {
       inspectedAt: new Date().toISOString(),
       durationMs,
       elements,
+      buttons,
       summary: {
         totalElements: elements.length,
-        buttonsCount,
+        buttonsCount: buttons.length,
         inputsCount,
         linksCount,
         textElementsCount,
