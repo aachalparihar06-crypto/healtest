@@ -1,0 +1,69 @@
+{
+  "totalRunsExecuted": 16,
+  "cleanPassCount": 7,
+  "healedCount": 7,
+  "failedCount": 2,
+  "inconclusiveCount": 0,
+  "overallHealingSuccessRatePercent": 88,
+  "repeatedLocatorFailures": [
+    {
+      "locator": "Add to Cart",
+      "occurrences": 1,
+      "lastFailedAt": "2026-10-12T01:39:10.637Z"
+    },
+    {
+      "locator": "Add to Cart on Nova Sound Wireless Headphones",
+      "occurrences": 1,
+      "lastFailedAt": "2026-10-12T01:38:43.636Z"
+    }
+  ],
+  "frequentlyHealedComponents": [
+    {
+      "componentName": "Continue to Purchase",
+      "healCount": 6,
+      "failCount": 0,
+      "lastHealedAt": "2026-10-11T10:15:10.213Z",
+      "topStrategies": [
+        "role_and_name_match"
+      ]
+    },
+    {
+      "componentName": "Send Feedback",
+      "healCount": 1,
+      "failCount": 0,
+      "lastHealedAt": "2026-10-12T00:40:12.527Z",
+      "topStrategies": [
+        "aria_label_fallback"
+      ]
+    }
+  ],
+  "recurringRootCauses": [
+    {
+      "category": "ACCESSIBLE_NAME_OR_ATTRIBUTE_CHANGE",
+      "count": 6,
+      "percentage": 38
+    },
+    {
+      "category": "APPLICATION_LOGIC_OR_ASSERTION_FAILURE",
+      "count": 1,
+      "percentage": 6
+    },
+    {
+      "category": "TIMING_OR_SYNCHRONIZATION_ISSUE",
+      "count": 1,
+      "percentage": 6
+    }
+  ],
+  "suggestedMaintenanceTests": [
+    {
+      "testId": "run-mv4myugn-8d5p",
+      "reason": "Locator \"Add to Cart\" failed repeatedly across 1 runs. Recommend updating to a stable accessible role locator.",
+      "priority": "high"
+    },
+    {
+      "testId": "run-mv4iz9mw-l13p",
+      "reason": "Component \"Continue to Purchase\" was healed 6 time(s). Recommend applying suggested permanent Playwright test patch.",
+      "priority": "medium"
+    }
+  ]
+}

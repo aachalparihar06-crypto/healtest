@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopEase - Running Shoes (Version B - Mutated UI)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #111827;
+      --border: #1f2937;
+      --text: #f3f4f6;
+      --primary: #8b5cf6;
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #311042 0%, #090d16 60%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: rgba(15, 23, 42, 0.85);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+      text-decoration: none;
+    }
+    .cart-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #1e293b;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      font-weight: 600;
+      color: #fff;
+    }
+    .badge {
+      background: var(--primary);
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .version-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 8px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #fbbf24;
+      font-weight: 600;
+    }
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px;
+      width: 100%;
+      flex: 1;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    }
+    .product-img {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      border: 1px solid #334155;
+      min-height: 280px;
+    }
+    .product-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .product-price {
+      font-size: 22px;
+      font-weight: 800;
+      color: #c084fc;
+      margin-bottom: 16px;
+    }
+    .product-desc {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .btn-add {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-add:hover {
+      background: linear-gradient(135deg, #6d28d9, #5b21b6);
+      transform: translateY(-1px);
+    }
+    #cart-toast {
+      display: none;
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/demo/shopease/version-b" class="brand">
+        <span>👟</span>
+        <span>ShopEase Store</span>
+      </a>
+      <div class="cart-btn" aria-label="Shopping Cart">
+        <span>🛒 Cart</span>
+        <span id="cart-count" data-testid="cart-badge" class="badge">0</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="version-banner">
+    [VERSION B - MUTATED CODE] • data-testid="add-to-basket" • Accessible Name: "Add to Basket"
+  </div>
+
+  <main>
+    <div class="product-grid">
+      <div class="product-img">👟</div>
+      <div class="product-details">
+        <h1 class="product-title">AeroGlide Pro Running Shoes</h1>
+        <div class="product-price">$129.99</div>
+        <p class="product-desc">
+          Engineered for performance and endurance. Breathable mesh upper, responsive carbon-infused foam cushioning, and ultra-durable all-weather rubber traction.
+        </p>
+
+        <!-- Version B Mutated Button: data-testid="add-to-basket" with text "Add to Basket" -->
+        <button id="add-to-basket-btn" data-testid="add-to-basket" role="button" aria-label="Add to Basket" class="btn-add">
+          <span>Add to Basket</span>
+          <span>→</span>
+        </button>
+
+        <div id="cart-toast" role="status">
+          ✓ Added to Basket! (Cart Count: 1)
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let count = 0;
+    const btn = document.getElementById('add-to-basket-btn');
+    const badge = document.getElementById('cart-count');
+    const toast = document.getElementById('cart-toast');
+
+    btn.addEventListener('click', () => {
+      count++;
+      badge.textContent = count;
+      badge.setAttribute('data-count', count);
+      toast.style.display = 'block';
+      toast.textContent = `✓ Added to Basket! (Cart Count: ${count})`;
+    });
+  </script>
+</body>
+</html>

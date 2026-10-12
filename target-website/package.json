@@ -1,0 +1,13 @@
+{
+  "name": "ecommerce-target-website",
+  "version": "1.0.0",
+  "description": "Standalone E-Commerce Target Website for HealTest E2E & Self-Healing Testing",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

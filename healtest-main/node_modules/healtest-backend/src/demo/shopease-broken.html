@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopEase - Running Shoes (Broken Business Logic Demo)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #111827;
+      --border: #1f2937;
+      --text: #f3f4f6;
+      --error: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #450a0a 0%, #090d16 60%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: rgba(15, 23, 42, 0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+    }
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { font-weight: 800; font-size: 20px; color: #fff; text-decoration: none; }
+    .cart-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #1e293b;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      font-weight: 600;
+      color: #fff;
+    }
+    .badge {
+      background: #ef4444;
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .version-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 8px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #fca5a5;
+      font-weight: 600;
+    }
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px;
+      width: 100%;
+      flex: 1;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+    }
+    .product-img {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      border: 1px solid #334155;
+      min-height: 280px;
+    }
+    .product-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .product-price { font-size: 22px; font-weight: 800; color: #f87171; margin-bottom: 16px; }
+    .product-desc { color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+    .btn-add {
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #cart-toast {
+      display: none;
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/demo/shopease/broken" class="brand">
+        <span>👟</span>
+        <span>ShopEase Store (Broken Cart Demo)</span>
+      </a>
+      <div class="cart-btn">
+        <span>🛒 Cart</span>
+        <span id="cart-count" data-testid="cart-badge" class="badge">0</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="version-banner">
+    [BROKEN APPLICATION LOGIC DEMO] • Cart service fails with 500 error; counter never increases. Tests must report FAIL.
+  </div>
+
+  <main>
+    <div class="product-grid">
+      <div class="product-img">👟</div>
+      <div class="product-details">
+        <h1 class="product-title">AeroGlide Pro Running Shoes</h1>
+        <div class="product-price">$129.99</div>
+        <p class="product-desc">
+          Demo page exhibiting a genuine application logic bug. Clicking Add to Cart triggers an internal service failure.
+        </p>
+
+        <!-- Button exists and is clickable, but backend business logic fails -->
+        <button id="add-to-cart-btn" data-testid="add-to-cart" role="button" aria-label="Add to Cart" class="btn-add">
+          <span>Add to Cart</span>
+        </button>
+
+        <div id="cart-toast" role="status">
+          ⚠ Server 500: Cart service unavailable. Item could not be added.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const btn = document.getElementById('add-to-cart-btn');
+    const toast = document.getElementById('cart-toast');
+    const badge = document.getElementById('cart-count');
+
+    btn.addEventListener('click', () => {
+      // Intentionally broken business logic: counter remains 0
+      toast.style.display = 'block';
+      console.error('CartService: Internal 500 failure adding item to session.');
+    });
+  </script>
+</body>
+</html>

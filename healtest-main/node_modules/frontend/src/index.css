@@ -1,0 +1,342 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-purple-deep: #4C1A57;
+  --color-purple-mid: #76518A;
+  --color-lavender: #BAB0D4;
+  --brand-gradient: linear-gradient(135deg, #4C1A57 0%, #76518A 50%, #BAB0D4 100%);
+  --brand-gradient-reverse: linear-gradient(135deg, #BAB0D4 0%, #76518A 50%, #4C1A57 100%);
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50/90 text-slate-900 antialiased selection:bg-[#76518A] selection:text-white min-h-screen font-sans;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Transition for smooth theme switching */
+  *, ::before, ::after {
+    border-color: inherit;
+  }
+}
+
+/* =========================================================================
+   1. Animated Gradient Top Navigation Bar (Deep Purple to Lavender)
+   ========================================================================= */
+.navbar-animated-gradient {
+  background: linear-gradient(135deg, #4C1A57 0%, #683b7b 30%, #76518A 65%, #BAB0D4 100%);
+  background-size: 220% 220%;
+  animation: navGradientShift 18s ease infinite;
+  box-shadow: 0 4px 20px -2px rgba(76, 26, 87, 0.32), 0 2px 6px -1px rgba(186, 176, 212, 0.2);
+}
+
+@keyframes navGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* =========================================================================
+   2. Primary Buttons with Gradient & Micro-Elevations
+   ========================================================================= */
+.btn-primary-gradient {
+  background: linear-gradient(135deg, #4C1A57 0%, #76518A 50%, #BAB0D4 100%);
+  background-size: 180% 180%;
+  color: #ffffff !important;
+  font-weight: 600;
+  border: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px -1px rgba(76, 26, 87, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-gradient:hover:not(:disabled) {
+  background-position: 95% 50%;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px -2px rgba(118, 81, 138, 0.45), 0 2px 6px -1px rgba(76, 26, 87, 0.28);
+}
+
+.btn-primary-gradient:active:not(:disabled) {
+  transform: translateY(0px);
+  box-shadow: 0 2px 6px -1px rgba(76, 26, 87, 0.3);
+}
+
+.btn-primary-gradient:focus-visible {
+  outline: 2px solid #76518A;
+  outline-offset: 2px;
+}
+
+.btn-primary-gradient:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* =========================================================================
+   3. Ultra-Thin Gradient Border Cards (1px Exact, Deep Purple to Lavender)
+   ========================================================================= */
+.card-gradient-border {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow: 0 1px 4px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.dark .card-gradient-border {
+  background-color: #0f172a;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.card-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(76, 26, 87, 0.5) 0%, rgba(118, 81, 138, 0.35) 50%, rgba(186, 176, 212, 0.55) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-gradient-border-hover:hover {
+  box-shadow: 0 6px 16px -2px rgba(76, 26, 87, 0.12), 0 2px 6px -1px rgba(186, 176, 212, 0.1);
+}
+
+/* =========================================================================
+   4. Floating Ambient Background Layer (4-8% Opacity)
+   ========================================================================= */
+.bg-ambient-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+@keyframes floatOrb1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(45px, 30px) scale(1.07);
+  }
+}
+
+@keyframes floatOrb2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(-40px, -25px) scale(0.96);
+  }
+}
+
+@keyframes floatOrb3 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(30px, -40px) scale(1.04);
+  }
+}
+
+.orb-float-1 {
+  animation: floatOrb1 26s ease-in-out infinite;
+}
+
+.orb-float-2 {
+  animation: floatOrb2 32s ease-in-out infinite;
+}
+
+.orb-float-3 {
+  animation: floatOrb3 28s ease-in-out infinite;
+}
+
+/* =========================================================================
+   5. New Test Module — Autonomous Testing Animated Background (Requirement 5)
+   ========================================================================= */
+.test-engine-bg-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+}
+
+.dark .test-engine-bg-container {
+  background-color: #0f172a;
+}
+
+.test-engine-bg-surface {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.85;
+}
+
+.dark .test-engine-bg-surface {
+  opacity: 0.5;
+}
+
+@keyframes testFloatDrift {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes testFlowDash {
+  0% {
+    stroke-dashoffset: 36;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes testPulseNode {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.08;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.16;
+  }
+}
+
+@keyframes testCrosshairScan {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.08;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.16;
+  }
+}
+
+@keyframes testParticleDrift1 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(14px, -18px);
+  }
+}
+
+@keyframes testParticleDrift2 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-12px, -14px);
+  }
+}
+
+.test-anim-float {
+  animation: testFloatDrift 16s ease-in-out infinite;
+}
+
+.test-anim-flow {
+  stroke-dasharray: 6 6;
+  animation: testFlowDash 14s linear infinite;
+}
+
+.test-anim-pulse {
+  animation: testPulseNode 6s ease-in-out infinite;
+}
+
+.test-anim-crosshair {
+  animation: testCrosshairScan 8s ease-in-out infinite;
+}
+
+.test-anim-particle-1 {
+  animation: testParticleDrift1 12s ease-in-out infinite;
+}
+
+.test-anim-particle-2 {
+  animation: testParticleDrift2 15s ease-in-out infinite;
+}
+
+/* =========================================================================
+   6. Utilities & Focus Rings
+   ========================================================================= */
+.text-gradient-brand {
+  background: linear-gradient(135deg, #4C1A57 0%, #76518A 50%, #BAB0D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.input-focus-brand:focus {
+  outline: none;
+  border-color: #76518A !important;
+  box-shadow: 0 0 0 2px rgba(118, 81, 138, 0.25) !important;
+}
+
+/* Light & Dark scrollbar styling */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #090d16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .navbar-animated-gradient,
+  .orb-float-1,
+  .orb-float-2,
+  .orb-float-3,
+  .btn-primary-gradient,
+  .test-anim-float,
+  .test-anim-flow,
+  .test-anim-pulse,
+  .test-anim-crosshair,
+  .test-anim-particle-1,
+  .test-anim-particle-2 {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+

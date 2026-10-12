@@ -1,0 +1,7 @@
+{
+  "role": "button",
+  "name": "Checkout",
+  "text": "Checkout",
+  "cssFallback": "#checkout-btn",
+  "originalStepDescription": "Click \"Checkout\""
+}
